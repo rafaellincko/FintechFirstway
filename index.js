@@ -2,9 +2,9 @@ const usuarios = require('./usuarios.js');
 
 const express = require('express');
 
+var port = process.env.PORT || 3000;
 const app = express();
 const TOKEN = 'dGVzdGU6MTIz';
-const PORT = 80;
 
 app.use(express.json());
 
@@ -75,4 +75,4 @@ hasAuthorization = (req) =>{
        return req.headers[auth] === 'Basic '+ TOKEN;
 }
 
-app.listen(PORT);
+app.listen(port);
