@@ -4,6 +4,7 @@ const express = require('express');
 
 const app = express();
 const TOKEN = 'dGVzdGU6MTIz';
+const PORT = 80;
 
 app.use(express.json());
 
@@ -74,4 +75,4 @@ hasAuthorization = (req) =>{
        return req.headers[auth] === 'Basic '+ TOKEN;
 }
 
-app.listen(3000);
+app.listen(PORT);
