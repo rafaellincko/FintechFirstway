@@ -1,4 +1,5 @@
 const usuarios = require('./usuarios.js');
+const anexos = require('./anexos.js')
 
 const express = require('express');
 
@@ -8,6 +9,7 @@ const TOKEN = 'dGVzdGU6MTIz';
 
 app.use(express.json());
 
+console.log('Start..');
 app.get('/usuarios', (req, resp)=> {
        if(hasAuthorization(req)){
               resp.status(200).send(usuarios);
@@ -26,12 +28,22 @@ app.get('/usuarios/pj', (req, resp)=> {
 
 app.get('/usuarios/pj/:cnpj', (req, resp)=> {
        if(hasAuthorization(req)){
-              console.log(req.params.cnpj);
+              console.log('/usuarios/pj/'+req.params.cnpj);
               resp.status(200).send(usuarios.filter(usuario => usuario.cnpj === req.params.cnpj));
        }else{
               semAutorizacao(resp);
        }
 });
+
+app.get('/anexos/:id', (req, resp)=> {
+       if(hasAuthorization(req)){
+              console.log('/anexos/'+req.params.id);
+              resp.status(200).send(anexos.filter(anexo => anexo.id === req.params.id));
+       }else{
+              semAutorizacao(resp);
+       }
+});
+
 
 app.get('/usuarios/pj/:cnpj/anexos', (req, resp)=> {
        if(hasAuthorization(req)){
