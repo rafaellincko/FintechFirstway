@@ -79,9 +79,7 @@ semAutorizacao = (resp) => {
 
 hasAuthorization = (req) =>{
        let auth = 'Authorization';
-       console.log("Return True");
-       return true;
-
+       
        if(req.headers[auth] === undefined){
               auth = auth.toLowerCase();
        }
