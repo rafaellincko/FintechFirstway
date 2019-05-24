@@ -59,7 +59,7 @@ module.exports = [
             saldo: '5000'
             }
         ],
-        endereco: [
+        enderecos: [
              {
                 tipo: 'Cobrança',
                 logradouro: 'Rua Jorge Latour, 183',
