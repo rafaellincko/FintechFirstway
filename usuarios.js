@@ -9,15 +9,18 @@ module.exports = [
             numero: '11111-x',
             saldo: '12000'
         },
-        endereco: {
-            logradouro: 'Rua João Câmara, 183',
-            complemento: '',
-            bairro: 'Itaquera',
-            cidade: 'São Paulo',
-            estado: 'São Paulo',
-            cep: '08210-720',
-            pais: 'Brasil'
-        },
+        enderecos: [
+             {
+                tipo: 'Comercial',
+                logradouro: 'Rua João Câmara, 183',
+                complemento: '',
+                bairro: 'Itaquera',
+                cidade: 'São Paulo',
+                estado: 'São Paulo',
+                cep: '08210-720',
+                pais: 'Brasil'
+            } 
+        ],
         telefones: [
             {
                 codigoPais: '55',
@@ -52,15 +55,18 @@ module.exports = [
             numero: '13151-x',
             saldo: '5000'
         },
-        endereco: {
-            logradouro: 'Rua Jorge Latour, 183',
-            complemento: '',
-            bairro: 'Centro',
-            cidade: 'Holambra',
-            estado: 'São Paulo',
-            cep: '13825-000',
-            pais: 'Brasil'
-        },
+        endereco: [
+             {
+                tipo: 'Cobrança',
+                logradouro: 'Rua Jorge Latour, 183',
+                complemento: '',
+                bairro: 'Centro',
+                cidade: 'Holambra',
+                estado: 'São Paulo',
+                cep: '13825-000',
+                pais: 'Brasil'
+            }   
+        ],
         telefones: [
             {
                 codigoPais: '55',
