@@ -5,7 +5,7 @@ module.exports = [
         atividade: 'prestador de serviços de informática',
         dataDeAbertura: '01/01/2019',
         faturamento: 10000,
-        conta: {
+        contas: {
             numero: '11111-x',
             saldo: '12000'
         },
@@ -31,16 +31,16 @@ module.exports = [
         beneficiarios: [
             {
                 nome: 'Rodolpho de Souza Lipovscek',
-                cpfOuCnpj: '36981191881',
+                cpfCnpj: '36981191881',
             }
         ],
         anexos: [
             {
-                nome: 'cpf',
+                descricao: 'cpf',
                 idAnexo: '1'
             },
             {
-                nome: 'ContratoSocial',
+                descricao: 'ContratoSocial',
                 idAnexo: '2'
             }
         ]
@@ -51,7 +51,7 @@ module.exports = [
         atividade: 'Restaurante',
         dataDeAbertura: '01/01/2018',
         faturamento: 1500,
-        conta: {
+        contas: {
             numero: '13151-x',
             saldo: '5000'
         },
@@ -77,12 +77,12 @@ module.exports = [
         beneficiarios: [
             {
                 nome: 'Jonas C Almeida',
-                cpfOuCnpj: '24639203861',
+                cpfCnpj: '24639203861',
             }
         ],
         anexos: [
             {
-                nome: 'ContratoSocial',
+                descricao: 'ContratoSocial',
                 idAnexo: '3'
              }
         ]
