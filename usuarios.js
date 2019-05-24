@@ -34,11 +34,11 @@ module.exports = [
         anexos: [
             {
                 nome: 'cpf',
-                id: '1'
+                idAnexo: '1'
             },
             {
                 nome: 'ContratoSocial',
-                id: '2'
+                idAnexo: '2'
             }
         ]
     },
@@ -77,7 +77,7 @@ module.exports = [
         anexos: [
             {
                 nome: 'ContratoSocial',
-                id: '3'
+                idAnexo: '3'
              }
         ]
     }
