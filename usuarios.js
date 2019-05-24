@@ -5,10 +5,12 @@ module.exports = [
         atividade: 'prestador de serviços de informática',
         dataDeAbertura: '01/01/2019',
         faturamento: 10000,
-        contas: {
+        contas: [
+            {
             numero: '11111-x',
             saldo: '12000'
-        },
+            }
+        ],
         enderecos: [
              {
                 tipo: 'Comercial',
@@ -51,10 +53,12 @@ module.exports = [
         atividade: 'Restaurante',
         dataDeAbertura: '01/01/2018',
         faturamento: 1500,
-        contas: {
+        contas: [
+            {
             numero: '13151-x',
             saldo: '5000'
-        },
+            }
+        ],
         endereco: [
              {
                 tipo: 'Cobrança',
