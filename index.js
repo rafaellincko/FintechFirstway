@@ -35,10 +35,10 @@ app.get('/usuarios/pj/:cnpj', (req, resp)=> {
        }
 });
 
-app.get('/anexos/:id', (req, resp)=> {
+app.get('/anexos/:cnpj/:id', (req, resp)=> {
        if(hasAuthorization(req)){
-              console.log('/anexos/'+req.params.id);
-              resp.status(200).send(anexos.filter(anexo => anexo.id === req.params.id));
+              console.log('/anexos/'+req.params.cnpj+"/"+req.params.id);
+              resp.status(200).send(anexos.filter(anexo => anexo.cnpj==req.params.cnpj).filter(anexo => anexo.id === req.params.id));
        }else{
               semAutorizacao(resp);
        }
