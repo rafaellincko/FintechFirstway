@@ -48,7 +48,7 @@ app.get('/anexos/:documento/:id', (req, resp)=> {
               }
               if(a==undefined || a==null){
                      console.log(".. Anexo nao encontrado...");
-                     resp.status(401).send("Anexo nao encontrado!");
+                     resp.status(500).send("Anexo nao encontrado!");
               } else {
                      // console.log(a);
                      resp.status(200).send(a);
