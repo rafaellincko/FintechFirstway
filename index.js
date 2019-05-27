@@ -35,10 +35,10 @@ app.get('/usuarios/pj/:cnpj', (req, resp)=> {
        }
 });
 
-app.get('/anexos/:cnpj/:id', (req, resp)=> {
+app.get('/anexos/:documento/:id', (req, resp)=> {
        if(hasAuthorization(req)){
-              console.log('/anexos/'+req.params.cnpj+"/"+req.params.id);
-              resp.status(200).send(anexos.filter(anexo => anexo.cnpj==req.params.cnpj).filter(anexo => anexo.id === req.params.id));
+              console.log('/anexos/'+req.params.documento+"/"+req.params.id);
+              resp.status(200).send(anexos.filter(anexo => anexo.documento==req.params.documento).filter(anexo => anexo.id === req.params.id));
        }else{
               semAutorizacao(resp);
        }
