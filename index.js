@@ -38,7 +38,21 @@ app.get('/usuarios/pj/:cnpj', (req, resp)=> {
 app.get('/anexos/:documento/:id', (req, resp)=> {
        if(hasAuthorization(req)){
               console.log('/anexos/'+req.params.documento+"/"+req.params.id);
-              resp.status(200).send(anexos.filter(anexo => anexo.documento==req.params.documento).filter(anexo => anexo.id === req.params.id));
+              let a;
+              for(let i=0;i<anexos.length;i++){
+                     if(anexos[i].documento==req.params.documento && anexos[i].id==req.params.id){
+                            a = anexos[i];
+                            break;
+                     }
+                     
+              }
+              if(a==undefined || a==null){
+                     console.log(".. Anexo nao encontrado...");
+                     resp.status(401).send("Anexo nao encontrado!");
+              } else {
+                     // console.log(a);
+                     resp.status(200).send(a);
+              }
        }else{
               semAutorizacao(resp);
        }
