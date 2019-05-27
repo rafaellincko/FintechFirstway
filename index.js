@@ -29,7 +29,20 @@ app.get('/usuarios/pj', (req, resp)=> {
 app.get('/usuarios/pj/:cnpj', (req, resp)=> {
        if(hasAuthorization(req)){
               console.log('/usuarios/pj/'+req.params.cnpj);
-              resp.status(200).send(usuarios.filter(usuario => usuario.cnpj === req.params.cnpj));
+              let usuario;
+              for(let i=0;i<usuarios.length;i++){
+                     if(usuarios[i].cnpj==req.params.cnpj){
+                            usuario = usuarios[i];
+                            break;
+                     }
+                     
+              }
+              if(usuario == undefined || usuario == null){
+                     resp.status(500).send("Usuário não encontrado!");
+              } else {
+                     resp.status(200).send(usuario);
+              }
+     
        }else{
               semAutorizacao(resp);
        }

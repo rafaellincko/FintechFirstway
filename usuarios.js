@@ -8,7 +8,7 @@ module.exports = [
         contas: [
             {
             numero: '11111-x',
-            saldo: '12000'
+            saldo: 12000.00
             }
         ],
         enderecos: [
@@ -56,7 +56,7 @@ module.exports = [
         contas: [
             {
             numero: '13151-x',
-            saldo: '5000'
+            saldo: 5000.00
             }
         ],
         enderecos: [
