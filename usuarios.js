@@ -34,6 +34,12 @@ module.exports = [
             {
                 nome: 'Rodolpho de Souza Lipovscek',
                 cpfCnpj: '36981191881',
+                pep: true
+            },
+            {   
+                nome: 'Alan Salomao',
+                cpfCnpj:'102030405060',
+                pep: false
             }
         ],
         anexos: [
@@ -82,6 +88,7 @@ module.exports = [
             {
                 nome: 'Jonas C Almeida',
                 cpfCnpj: '24639203861',
+                pep: false
             }
         ],
         anexos: [

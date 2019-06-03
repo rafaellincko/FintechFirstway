@@ -54,6 +54,7 @@ app.get('/usuarios/pj/:cnpj', (req, resp)=> {
 });
 
 app.get('/anexos/:documento/:id', (req, resp)=> {
+       console.log('/anexos/{documento}/{id}');
        if(hasAuthorization(req)){
               console.log('/anexos/'+req.params.documento+"/"+req.params.id);
               let a;
@@ -68,7 +69,7 @@ app.get('/anexos/:documento/:id', (req, resp)=> {
                      console.log(".. Anexo nao encontrado...");
                      resp.status(500).send("Anexo nao encontrado!");
               } else {
-                     console.log(a);
+                     console.log(a.id+" documento:"+a.documento+" tipo: "+a.tipo);
                      resp.status(200).send(a);
               }
        }else{
@@ -121,7 +122,8 @@ hasAuthorization = (req) =>{
        }
        console.log("Should be..... [Basic "+ TOKEN+"]");
        console.log("Autorizado ... ["+req.headers[auth]+"]");
-       return true; // req.headers[auth] === 'Basic '+ TOKEN;
+       //return true; 
+       return req.headers[auth] === 'Basic '+ TOKEN;
 }
 
 app.listen(port);
