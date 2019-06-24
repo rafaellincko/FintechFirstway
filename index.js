@@ -215,11 +215,18 @@ app.post('/auth/oauth/v1/token',
                             const res_data = req.body;
                             let retorno = '{ "numeroProtocolo": "'+res_data.numeroProtocolo+
                                           '", "statusConta": "'+res_data.statusRelacionamento+
-                                          '", "statusProcessamento": "Confirmado", '+
+                                          '", "dataInicio":"'+res_data.dataInicio+
+                                          '", "dataFim:" :';
+                            if(res_data.dataFim===null) {
+                                   retorno +='null';
+                            } else {
+                                   retorno +='"'+res_data.dataFim+'"';
+                            }
+                            retorno += ' , "statusProcessamento": "Confirmado", '+
                                           '"idProcessamento": 1234567890 } ';
                             console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                             console.log(" Protocolo: "+res_data.numeroProtocolo);
-                            console.log(" Status: "+res_data.statusRelacionamento);
+                            console.log(" Status: "+res_data.statusRelacionamento+" - "+res_data.dataInicio +" a "+res_data.dataFim);
                             let pessoas = res_data.pessoas;
                             for(let i=0;i<pessoas.length;i++){
                                    console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
