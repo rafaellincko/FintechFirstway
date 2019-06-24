@@ -183,7 +183,7 @@ app.post('/auth/oauth/v1/token',
               console.log("/auth/oauth/v1/token ");
               console.dir(req.body);
               console.log("--------------------------");
-              if(req.body.client_id==='jalmeida' &&
+              if(req.body.client_id==='resource.jalmeida' &&
                      req.body.client_secret==='teste' &&
                      req.body.grant_type==='client_credentials'){
                      console.log("Ok! "+req.body.client_id);
