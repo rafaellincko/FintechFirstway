@@ -205,7 +205,7 @@ app.post('/auth/oauth/v1/token',
        );
 
 
-       app.post('/validaConta', 
+       app.post('/incluirConta', 
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
@@ -213,6 +213,7 @@ app.post('/auth/oauth/v1/token',
                             console.log(req.body);
                             console.log("--------------------------");
                             const res_data = req.body;
+                            /*
                             let retorno = '{ "numeroProtocolo": "'+res_data.numeroProtocolo+
                                           '", "statusConta": "'+res_data.statusRelacionamento+
                                           '", "dataInicio":"'+res_data.dataInicio+
@@ -224,6 +225,8 @@ app.post('/auth/oauth/v1/token',
                             }
                             retorno += ' , "statusProcessamento": "Confirmado", '+
                                           '"idProcessamento": 1234567890 } ';
+                            */
+                            const retorno = '{ "StStatus": "OK", "DsMensagem": "'+res_data.numeroProtocolo+'-'+res_data.statusRelacionamento+'" } ';
                             console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                             console.log(" Protocolo: "+res_data.numeroProtocolo);
                             console.log(" Status: "+res_data.statusRelacionamento+" - "+res_data.dataInicio +" a "+res_data.dataFim);

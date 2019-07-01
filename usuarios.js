@@ -1,7 +1,7 @@
 module.exports = [
     {
         cnpj: '01234567890123',
-        razaoSocial: 'Rodolpho sa',
+        razaoSocial: 'Rodolpho S.A.',
         atividade: 'prestador de serviços de informática',
         dataDeAbertura: '01/01/2019',
         faturamento: 10000,
