@@ -226,7 +226,8 @@ app.post('/auth/oauth/v1/token',
                             retorno += ' , "statusProcessamento": "Confirmado", '+
                                           '"idProcessamento": 1234567890 } ';
                             */
-                            const retorno = '{ "StStatus": "OK", "DsMensagem": "'+res_data.numeroProtocolo+'-'+res_data.statusRelacionamento+'" } ';
+                            const retorno = '{ "StStatus": "OK", "DsMensagem": " numeroProtocolo: '+res_data.numeroProtocolo+
+                                                 '. Status Relacionamento: '+res_data.statusRelacionamento+'" } ';
                             console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                             console.log(" Protocolo: "+res_data.numeroProtocolo);
                             console.log(" Status: "+res_data.statusRelacionamento+" - "+res_data.dataInicio +" a "+res_data.dataFim);
