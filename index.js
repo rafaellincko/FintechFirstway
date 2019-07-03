@@ -226,16 +226,20 @@ app.post('/auth/oauth/v1/token',
                             retorno += ' , "statusProcessamento": "Confirmado", '+
                                           '"idProcessamento": 1234567890 } ';
                             */
-                            const retorno = '{ "StStatus": "OK", "DsMensagem": " numeroProtocolo: '+res_data.numeroProtocolo+
-                                                 '. Status Relacionamento: '+res_data.statusRelacionamento+'" } ';
-                            console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                            console.log(" Protocolo: "+res_data.numeroProtocolo);
-                            console.log(" Status: "+res_data.statusRelacionamento+" - "+res_data.dataInicio +" a "+res_data.dataFim);
-                            let pessoas = res_data.pessoas;
-                            for(let i=0;i<pessoas.length;i++){
-                                   console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
+                           let retorno=" ";
+                           try {
+                                   retorno = '{ "StStatus": "OK", "DsMensagem": "Protocolo: '+res_data.Protocolo+'" } ';
+                                   console.log(" Agencia/Conta: "+res_data.nuAgencia+" / "+res_data.nuConta);
+                                   console.log(" Protocolo: "+res_data.nuProtocolo);
+                                   console.log(" Status: "+res_data.dtInicio);
+                                   let pessoas = res_data.listaUsuario;
+                                   for(let i=0;i<pessoas.length;i++){
+                                          console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].nuDocumento);
+                                   }
+                            }catch( e){
+                                   retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
                             }
-                           
+                            
                             resp.status(200).send(retorno);
                             //resp.status(200).send(usuarios);
                      }else{
