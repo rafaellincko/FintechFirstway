@@ -228,7 +228,7 @@ app.post('/auth/oauth/v1/token',
                             */
                            let retorno=" ";
                            try {
-                                   retorno = '{ "StStatus": "OK", "DsMensagem": "Protocolo: '+res_data.Protocolo+'" } ';
+                                   retorno = '{ "StStatus": "OK", "DsMensagem": "Protocolo:'+res_data.Protocolo+'" } ';
                                    console.log(" Agencia/Conta: "+res_data.nuAgencia+" / "+res_data.nuConta);
                                    console.log(" Protocolo: "+res_data.nuProtocolo);
                                    console.log(" Status: "+res_data.dtInicio);
