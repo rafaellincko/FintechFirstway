@@ -248,5 +248,132 @@ app.post('/auth/oauth/v1/token',
               }
               );
        
+              app.post('/bloquearConta', 
+              (req, resp)=> {
+                     
+                     if(hasAuthorization(req)){
+                            console.log("Result ");
+                            console.log(req.body);
+                            console.log("--------------------------");
+                            const res_data = req.body;
+                            /*
+                            let retorno = '{ "numeroProtocolo": "'+res_data.numeroProtocolo+
+                                          '", "statusConta": "'+res_data.statusRelacionamento+
+                                          '", "dataInicio":"'+res_data.dataInicio+
+                                          '", "dataFim:" :';
+                            if(res_data.dataFim===null) {
+                                   retorno +='null';
+                            } else {
+                                   retorno +='"'+res_data.dataFim+'"';
+                            }
+                            retorno += ' , "statusProcessamento": "Confirmado", '+
+                                          '"idProcessamento": 1234567890 } ';
+                            */
+                           let retorno=" ";
+                           try {
+                                  try {
+                                         if(res_data.cdStatusRelacionamento!=1){
+                                                if(res_data.cdStatusRelacionamento!=2){
+                                                       throw new Error('Status do relacionamento nao pode ser diferente de 1 ou 2');
+                                                }
+                                         }
+                                  } catch(e){
+                                         throw new Error('É obrigatório informar cdStatusRelacionamento!'+e);
+                                  }
+                                  try {
+                                         if(res_data.dsMotivoBloqueio.length===0){
+                                           throw new Error('É obrigatório informar dsMotivoBloqueio');
+                                         }
+                                  } catch(e){
+                                          throw new Error('É obrigatório informar dsMotivoBloqueio')
+                                  }
+                                  try {
+                                          if(res_data.nuConta.length===0){
+                                                 throw new Error('É obrigatorio informar o numero da conta!');
+                                          }
+                                   } catch(e){
+                                          throw new Error('E obrigatorio informar o numero da conta ');            
+                                          }
+                                          
+                                   retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
+                                   console.log(" Agencia/Conta: "+res_data.nuAgencia+" / "+res_data.nuConta);
+                                   console.log(" Status: "+res_data.cdStatusRelacionamento);
+                                   console.log(" Motivo: "+res_data.dsMotivoBloqueio);
+                                   console.log(" Data: "+res_data.dtInicio);
+                            }catch( e){
+                                   retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
+                            }
+                            
+                            resp.status(200).send(retorno);
+                            //resp.status(200).send(usuarios);
+                     }else{
+                            semAutorizacao(req, resp);
+                     }
+              }
+              );
+
+              app.post('/encerrarConta', 
+              (req, resp)=> {
+                     
+                     if(hasAuthorization(req)){
+                            console.log("Result ");
+                            console.log(req.body);
+                            console.log("--------------------------");
+                            const res_data = req.body;
+
+                            let retorno=" ";
+                            try {
+                                   try {
+                                          if(res_data.nuConta.length===0){
+                                                 throw new Error('Conta vazia!');
+                                          }
+                                   } catch(e){
+                                         throw new Error('É obrigatório informar nuConta!'+e);
+                                   }
+
+                                   try {
+                                          if(res_data.dtInicio.length===0){
+                                                 throw new Error('Data vazia!');
+                                          }
+                                   } catch(e){
+                                         throw new Error('É obrigatório informar o inicio da conta!'+e);
+                                   }
+                                   try {
+                                          if(res_data.dtFim.length===0){
+                                                 throw new Error('Data vazia!');
+                                          }
+                                   } catch(e){
+                                         throw new Error('É obrigatório informar o encerramento (dtFim)!'+e);
+                                   }
+
+                                   try {
+                                          if(res_data.listaUsuario.length===0){
+                                                 throw new Error('lista de usuário vazia!');
+                                          }
+                                   } catch(e){
+                                         throw new Error('É obrigatório informar o usuários da conta!'+e);
+                                   }
+
+                                   try {
+                                          let pessoas = res_data.listaUsuario.usuarios;
+                                          for(let i=0;i<pessoas.length;i++){
+                                                 console.log(" Pessoa/Documento: "+pessoas[i].Nome+" / "+pessoas[i].NuDocumento);
+                                          }
+       
+                                   } catch(e){
+                                          throw new Error('Erro na leitura de pessoas '+e);
+                                   }
+                                   retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
+                            }catch( e){
+                                   retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
+                            }
+                            
+                            resp.status(200).send(retorno);
+                            //resp.status(200).send(usuarios);
+                     }else{
+                            semAutorizacao(req, resp);
+                     }
+              }
+              );
 
 app.listen(port);
