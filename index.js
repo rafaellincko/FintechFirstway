@@ -248,7 +248,7 @@ app.post('/auth/oauth/v1/token',
               }
               );
        
-              app.post('/bloquearConta', 
+              app.post('/bloquearDesbloquearConta', 
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
