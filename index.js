@@ -236,11 +236,14 @@ app.post('/auth/oauth/v1/token',
                                    for(let i=0;i<pessoas.length;i++){
                                           console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].nuDocumento);
                                    }
+                                   resp.status(200).send(retorno);
+
                             }catch( e){
                                    retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
+                                   resp.status(400).send(retorno);
                             }
                             
-                            resp.status(200).send(retorno);
+                            //resp.status(200).send(retorno);
                             //resp.status(200).send(usuarios);
                      }else{
                             semAutorizacao(req, resp);
@@ -293,18 +296,19 @@ app.post('/auth/oauth/v1/token',
                                           }
                                    } catch(e){
                                           throw new Error('E obrigatorio informar o numero da conta ');            
-                                          }
-                                          
+                                   }
                                    retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
                                    console.log(" Agencia/Conta: "+res_data.nuAgencia+" / "+res_data.nuConta);
                                    console.log(" Status: "+res_data.cdStatusRelacionamento);
                                    console.log(" Motivo: "+res_data.dsMotivoBloqueio);
                                    console.log(" Data: "+res_data.dtInicio);
+                                   resp.status(200).send(retorno);
                             }catch( e){
                                    retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
+                                   resp.status(400).send(retorno);
+
                             }
                             
-                            resp.status(200).send(retorno);
                             //resp.status(200).send(usuarios);
                      }else{
                             semAutorizacao(req, resp);
@@ -364,11 +368,13 @@ app.post('/auth/oauth/v1/token',
                                           throw new Error('Erro na leitura de pessoas '+e);
                                    }
                                    retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
+                                   resp.status(200).send(retorno);
                             }catch( e){
                                    retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
+                                   resp.status(400).send(retorno);
                             }
                             
-                            resp.status(200).send(retorno);
+                            //resp.status(200).send(retorno);
                             //resp.status(200).send(usuarios);
                      }else{
                             semAutorizacao(req, resp);
