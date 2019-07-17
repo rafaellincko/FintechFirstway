@@ -228,14 +228,18 @@ app.post('/auth/oauth/v1/token',
                             */
                            let retorno=" ";
                            try {
-                                   retorno = '{ "StStatus": "OK", "DsMensagem": "Protocolo:'+res_data.Protocolo+'" } ';
-                                   console.log(" Agencia/Conta: "+res_data.nuAgencia+" / "+res_data.nuConta);
-                                   console.log(" Protocolo: "+res_data.nuProtocolo);
-                                   console.log(" Status: "+res_data.dtInicio);
-                                   let pessoas = res_data.listaUsuario;
+                                   retorno = '{ "StStatus": "OK", "DsMensagem": "'+res_data.protocolo+'XPTO" } ';
+                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   console.log(" Data Inicio: "+res_data.dataInicio);
+                                   console.log(" Protocolo: "+res_data.protocolo);
+                                   let pessoas = res_data.listaUsuario.usuarios;
                                    for(let i=0;i<pessoas.length;i++){
-                                          console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].nuDocumento);
+                                          console.log("---------------------------------------")
+                                          console.log("      Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
+                                          console.log("      tipoPessoa:"+pessoas[i].tipoPessoa);
+                                          console.log("      codigoTipoVinculo:"+pessoas[i].codigoTipoVinculo);
                                    }
+                                   console.log("---------------------------------------")
                                    resp.status(200).send(retorno);
 
                             }catch( e){
