@@ -305,7 +305,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Status: "+res_data.codigoStatusRelacionamentoConta);
                                    console.log(" Motivo: "+res_data.descricaoMotivoBloqueio);
-                                   console.log(" Data: "+res_data.dtInicio);
+                                   console.log(" Data: "+res_data.dataInicio);
                                    resp.status(200).send(retorno);
                             }catch( e){
                                    retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
@@ -340,7 +340,7 @@ app.post('/auth/oauth/v1/token',
                                    }
 
                                    try {
-                                          if(res_data.dtInicio.length===0){
+                                          if(res_data.dataInicio.length===0){
                                                  throw new Error('Data vazia!');
                                           }
                                    } catch(e){
