@@ -350,11 +350,11 @@ app.post('/auth/oauth/v1/token',
                                          throw new Error('É obrigatório informar o inicio da conta!'+e);
                                    }
                                    try {
-                                          if(res_data.dtFim.length===0){
+                                          if(res_data.dataFim.length===0){
                                                  throw new Error('Data vazia!');
                                           }
                                    } catch(e){
-                                         throw new Error('É obrigatório informar o encerramento (dtFim)!'+e);
+                                         throw new Error('É obrigatório informar o encerramento (dataFim)!'+e);
                                    }
 
                                    try {
@@ -368,7 +368,7 @@ app.post('/auth/oauth/v1/token',
                                    try {
                                           let pessoas = res_data.listaUsuario.usuarios;
                                           for(let i=0;i<pessoas.length;i++){
-                                                 console.log(" Pessoa/Documento: "+pessoas[i].Nome+" / "+pessoas[i].NuDocumento);
+                                                 console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
                                           }
        
                                    } catch(e){
