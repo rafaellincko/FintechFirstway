@@ -301,12 +301,15 @@ app.post('/auth/oauth/v1/token',
                                    } catch(e){
                                           throw new Error('E obrigatorio informar o numero da conta ');            
                                    }
-                                   retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
+                                   retorno = '{ "StStatus": "OK", "DsMensagem": "Blocked/Unblocked" } ';
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Status: "+res_data.codigoStatusRelacionamentoConta);
                                    console.log(" Motivo: "+res_data.descricaoMotivoBloqueio);
                                    console.log(" Data: "+res_data.dataInicio);
+                                   console.log('--------------------------------------');
                                    resp.status(200).send(retorno);
+                                   console.log('--------------------------------------');
+                                   
                             }catch( e){
                                    retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
                                    resp.status(400).send(retorno);
@@ -371,10 +374,15 @@ app.post('/auth/oauth/v1/token',
                                    } catch(e){
                                           throw new Error('Erro na leitura de pessoas '+e);
                                    }
+                                   console.log('--------------------------------------');
                                    retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
+                                   console.log('--------------------------------------');
+                                   
                                    resp.status(200).send(retorno);
                             }catch( e){
+                                   console.log('--------------------------------------');
                                    retorno = '{ "StStatus": "NOK", "DsMensagem": "Erro: '+e+'" } ';
+                                   console.log('--------------------------------------');
                                    resp.status(400).send(retorno);
                             }
                             
