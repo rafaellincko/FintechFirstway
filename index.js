@@ -279,32 +279,32 @@ app.post('/auth/oauth/v1/token',
                            let retorno=" ";
                            try {
                                   try {
-                                         if(res_data.cdStatusRelacionamento!=1){
-                                                if(res_data.cdStatusRelacionamento!=2){
+                                         if(res_data.codigoStatusRelacionamentoConta!=1){
+                                                if(res_data.codigoStatusRelacionamentoConta!=2){
                                                        throw new Error('Status do relacionamento nao pode ser diferente de 1 ou 2');
                                                 }
                                          }
                                   } catch(e){
-                                         throw new Error('É obrigatório informar cdStatusRelacionamento!'+e);
+                                         throw new Error('É obrigatório informar codigoStatusRelacionamentoConta!'+e);
                                   }
                                   try {
-                                         if(res_data.dsMotivoBloqueio.length===0){
-                                           throw new Error('É obrigatório informar dsMotivoBloqueio');
+                                         if(res_data.descricaoMotivoBloqueio.length===0){
+                                           throw new Error('É obrigatório informar descricaoMotivoBloqueio');
                                          }
                                   } catch(e){
-                                          throw new Error('É obrigatório informar dsMotivoBloqueio')
+                                          throw new Error('É obrigatório informar descricaoMotivoBloqueio')
                                   }
                                   try {
-                                          if(res_data.nuConta.length===0){
+                                          if(res_data.numeroConta.length===0){
                                                  throw new Error('É obrigatorio informar o numero da conta!');
                                           }
                                    } catch(e){
                                           throw new Error('E obrigatorio informar o numero da conta ');            
                                    }
                                    retorno = '{ "StStatus": "OK", "DsMensagem": "" } ';
-                                   console.log(" Agencia/Conta: "+res_data.nuAgencia+" / "+res_data.nuConta);
-                                   console.log(" Status: "+res_data.cdStatusRelacionamento);
-                                   console.log(" Motivo: "+res_data.dsMotivoBloqueio);
+                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   console.log(" Status: "+res_data.codigoStatusRelacionamentoConta);
+                                   console.log(" Motivo: "+res_data.descricaoMotivoBloqueio);
                                    console.log(" Data: "+res_data.dtInicio);
                                    resp.status(200).send(retorno);
                             }catch( e){
@@ -332,11 +332,11 @@ app.post('/auth/oauth/v1/token',
                             let retorno=" ";
                             try {
                                    try {
-                                          if(res_data.nuConta.length===0){
+                                          if(res_data.numeroConta.length===0){
                                                  throw new Error('Conta vazia!');
                                           }
                                    } catch(e){
-                                         throw new Error('É obrigatório informar nuConta!'+e);
+                                         throw new Error('É obrigatório informar numeroConta!'+e);
                                    }
 
                                    try {
