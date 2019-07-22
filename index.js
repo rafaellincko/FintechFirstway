@@ -152,28 +152,35 @@ hasAuthorization =
                  
               }
               const keyToken = jtoken.token_type+" "+jtoken.access_token;
-              if(req.headers[auth].substring(0,31) === keyToken.substring(0,31)){
-                     console.log(" Validando periodo!");
-                     const strData = req.headers[auth].substring(31,41);
-                     console.log("Cabec "+req.headers[auth]);
-                     console.log("Cabec "+req.headers[auth].substring(0,31));
-                     const now = new Date();
-                     const ano = "20"+strData.substring(0,2);
-                     const mes = strData.substring(2,4);
-                     const dia = strData.substring(4,6);
-                     const hora = strData.substring(6,8);
-                     const minuto = strData.substring(8,10);
-                     console.log(" StrData "+ano+"-"+mes+"-"+
-                                   dia+" "+
-                                   hora+":"+
-                                   minuto+" "); 
+              try {
+                     console.log(' KeyToken '+keyToken);
+                     console.log(' Header '+req.headers[auth].substring(0,31));
+                     if(req.headers[auth].substring(0,31) === keyToken.substring(0,31)){
+                            console.log(" Validando periodo!");
+                            const strData = req.headers[auth].substring(31,41);
+                            console.log("Cabec "+req.headers[auth]);
+                            console.log("Cabec "+req.headers[auth].substring(0,31));
+                            const now = new Date();
+                            const ano = "20"+strData.substring(0,2);
+                            const mes = strData.substring(2,4);
+                            const dia = strData.substring(4,6);
+                            const hora = strData.substring(6,8);
+                            const minuto = strData.substring(8,10);
+                            console.log(" StrData "+ano+"-"+mes+"-"+
+                                          dia+" "+
+                                          hora+":"+
+                                          minuto+" "); 
 
-                     let dt = new Date(ano+"-"+mes+"-"+dia+" "+hora+":"+minuto+":00");
-                     console.log(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
-                     dt.setSeconds(dt.getSeconds()+3600);     
-                     console.log(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
-                     return now<=dt;
-                 
+                            let dt = new Date(ano+"-"+mes+"-"+dia+" "+hora+":"+minuto+":00");
+                            console.log(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
+                            dt.setSeconds(dt.getSeconds()+3600);     
+                            console.log(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
+                            return now<=dt;
+                     
+                     }
+              }catch(e){
+                     console.log(e);
+                     return false;
               }
 
        }
