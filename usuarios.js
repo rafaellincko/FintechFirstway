@@ -1,5 +1,59 @@
 module.exports = [
     {
+        cnpj: '24639203861',
+        razaoSocial: 'TESTE S.A.',
+        atividade: 'testadores anonimos',
+        dataDeAbertura: '01/01/2019',
+        faturamento: 1000,
+        contas: [
+            {
+            numero: '33334-x',
+            saldo: 1200.00
+            }
+        ],
+        enderecos: [
+             {
+                tipo: 'Comercial',
+                logradouro: 'Novo Teste, 345',
+                complemento: '',
+                bairro: 'TEs',
+                cidade: 'São Paulo',
+                estado: 'São Paulo',
+                cep: '08210-720',
+                pais: 'Brasil'
+            } 
+        ],
+        telefones: [
+            {
+                codigoPais: '55',
+                codigoDDD: 11,
+                numero: 992308551
+            }
+        ],
+        beneficiarios: [
+            {
+                nome: 'Testador Um',
+                cpfCnpj: '01234567890',
+                pep: true
+            },
+            {   
+                nome: 'Alan Salomao',
+                cpfCnpj:'102030405060',
+                pep: false
+            }
+        ],
+        anexos: [
+            {
+                descricao: 'cpf',
+                idAnexo: '1'
+            },
+            {
+                descricao: 'ContratoSocial',
+                idAnexo: '2'
+            }
+        ]
+    },
+    {
         cnpj: '01234567890123',
         razaoSocial: 'Rodolpho S.A.',
         atividade: 'prestador de serviços de informática',
