@@ -249,7 +249,12 @@ app.post('/auth/oauth/v1/token',
                                           console.log("      tipoPessoa:"+pessoas[i].tipoPessoa);
                                           console.log("      codigoTipoVinculo:"+pessoas[i].codigoTipoVinculo);
                                    }
-                                   console.log("---------------------------------------")
+                                   console.log("---------------------------------------");
+                                   console.log("Retorno");
+                                   console.log("---------------------------------------");
+                                   console.log(retorno);
+                                   console.log("---------------------------------------");
+                                   
                                    resp.status(200).send(retorno);
 
                             }catch( e){
