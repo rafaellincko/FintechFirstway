@@ -258,6 +258,10 @@ app.post('/auth/oauth/v1/token',
                                    resp.status(200).send(retorno);
 
                             }catch( e){
+                                   console.log("--------------------------------------");
+                                   console.log(" Erro ");
+                                   console.log(e);
+                                   console.log("--------------------------------------------");
                                    retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
                                    resp.status(400).send(retorno);
                             }
