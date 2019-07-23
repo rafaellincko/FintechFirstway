@@ -139,6 +139,7 @@ hasAuthorization =
        (req) =>{
               let auth = 'Authorization';
               
+              console.log(req.headers);
               if(req.headers[auth] === undefined){
                      auth = auth.toLowerCase();
               }
