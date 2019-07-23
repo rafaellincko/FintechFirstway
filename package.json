@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jnscmps/FintechFirstway.git"
+    "url": "git+https://github.com/jnscmps/fintech2.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jnscmps/FintechFirstway/issues"
+    "url": "https://github.com/jnscmps/fintech2/issues"
   },
-  "homepage": "https://github.com/jnscmps/FintechFirstway#readme",
+  "homepage": "https://github.com/jnscmps/fintech2#readme",
   "dependencies": {
     "dateformat": "^3.0.3",
     "express": "^4.17.0"

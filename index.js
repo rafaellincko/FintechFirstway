@@ -41,27 +41,29 @@ app.get('/usuarios/pj',
 
 app.get('/usuarios/pj/:cnpj', 
        (req, resp)=> {
-              if(hasAuthorization(req)){
-                     console.log('/usuarios/pj/'+req.params.cnpj);
-                     let usuario;
-                     for(let i=0;i<usuarios.length;i++){
-                            if(usuarios[i].cnpj==req.params.cnpj){
-                                   usuario = usuarios[i];
-                                   break;
+              setTimeout(()=>{
+                     if(hasAuthorization(req)){
+                            console.log('/usuarios/pj/'+req.params.cnpj);
+                            let usuario;
+                            for(let i=0;i<usuarios.length;i++){
+                                   if(usuarios[i].cnpj==req.params.cnpj){
+                                          usuario = usuarios[i];
+                                          break;
+                                   }
+                                   
                             }
-                            
-                     }
-
-                     if(usuario == undefined || usuario == null){
-                            console.log("Usuário não encontrado!");
-                            resp.status(500).send("Usuário não encontrado!");
-                     } else {
-                            resp.status(200).send(usuario);
-                     }
        
-              }else{
-                     semAutorizacao(req, resp);
-              }
+                            if(usuario == undefined || usuario == null){
+                                   console.log("Usuário não encontrado!");
+                                   resp.status(500).send("Usuário não encontrado!");
+                            } else {
+                                   resp.status(200).send(usuario);
+                            }
+              
+                     }else{
+                            semAutorizacao(req, resp);
+                     }
+              }, 30000);
        });
 
 app.get('/anexos/:documento/:id', 
@@ -139,6 +141,7 @@ hasAuthorization =
        (req) =>{
               let auth = 'Authorization';
               
+              console.log(req.headers);
               if(req.headers[auth] === undefined){
                      auth = auth.toLowerCase();
               }
