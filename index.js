@@ -242,7 +242,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Data Inicio: "+res_data.dataInicio);
                                    console.log(" Protocolo: "+res_data.protocolo);
-                                   let pessoas = res_data.listaUsuario.usuarios;
+                                   let pessoas = res_data.listaUsuario.usuario;
                                    for(let i=0;i<pessoas.length;i++){
                                           console.log("---------------------------------------")
                                           console.log("      Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
@@ -385,7 +385,7 @@ app.post('/auth/oauth/v1/token',
                                    }
 
                                    try {
-                                          let pessoas = res_data.listaUsuario.usuarios;
+                                          let pessoas = res_data.listaUsuario.usuariolistaUsuario.usuario;
                                           for(let i=0;i<pessoas.length;i++){
                                                  console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
                                           }
