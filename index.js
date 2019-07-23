@@ -41,7 +41,7 @@ app.get('/usuarios/pj',
 
 app.get('/usuarios/pj/:cnpj', 
        (req, resp)=> {
-              setTimeout(()=>{
+              
                      if(hasAuthorization(req)){
                             console.log('/usuarios/pj/'+req.params.cnpj);
                             let usuario;
@@ -63,7 +63,7 @@ app.get('/usuarios/pj/:cnpj',
                      }else{
                             semAutorizacao(req, resp);
                      }
-              }, 30000);
+
        });
 
 app.get('/anexos/:documento/:id', 
