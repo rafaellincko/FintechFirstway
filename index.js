@@ -263,7 +263,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log(e);
                                    console.log("--------------------------------------------");
                                    retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
-                                   resp.status(400).send(retorno);
+                                   resp.status(200).send(retorno);
                             }
                             
                             //resp.status(200).send(retorno);
@@ -331,7 +331,7 @@ app.post('/auth/oauth/v1/token',
                                    
                             }catch( e){
                                    retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
-                                   resp.status(400).send(retorno);
+                                   resp.status(200).send(retorno);
 
                             }
                             
@@ -402,7 +402,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log('--------------------------------------');
                                    retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
                                    console.log('--------------------------------------');
-                                   resp.status(400).send(retorno);
+                                   resp.status(200).send(retorno);
                             }
                             
                             //resp.status(200).send(retorno);
