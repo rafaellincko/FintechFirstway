@@ -300,7 +300,7 @@ app.post('/auth/oauth/v1/token',
                                   try {
                                          if(res_data.codigoStatusRelacionamentoConta!=1){
                                                 if(res_data.codigoStatusRelacionamentoConta!=2){
-                                                       throw new Error('Status do relacionamento nao pode ser diferente de 1 ou 2');
+                                                       throw new Error('Status do relacionamento nao pode ser diferente de 1 ou 2!');
                                                 }
                                          }
                                   } catch(e){
@@ -308,10 +308,10 @@ app.post('/auth/oauth/v1/token',
                                   }
                                   try {
                                          if(res_data.descricaoMotivoBloqueio.length===0){
-                                           throw new Error('É obrigatório informar descricaoMotivoBloqueio');
+                                           throw new Error('É obrigatório informar descricaoMotivoBloqueio!');
                                          }
                                   } catch(e){
-                                          throw new Error('É obrigatório informar descricaoMotivoBloqueio')
+                                          throw new Error('É obrigatório informar descricaoMotivoBloqueio!')
                                   }
                                   try {
                                           if(res_data.numeroConta.length===0){
