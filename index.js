@@ -377,7 +377,7 @@ app.post('/auth/oauth/v1/token',
                                    }
 
                                    try {
-                                          if(res_data.listaUsuario.length===0){
+                                          if(res_data.listaUsuario.usuario.length===0){
                                                  throw new Error('lista de usuário vazia!');
                                           }
                                    } catch(e){
@@ -385,7 +385,7 @@ app.post('/auth/oauth/v1/token',
                                    }
 
                                    try {
-                                          let pessoas = res_data.listaUsuario.usuariolistaUsuario.usuario;
+                                          let pessoas = res_data.listaUsuario.usuario;
                                           for(let i=0;i<pessoas.length;i++){
                                                  console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
                                           }
