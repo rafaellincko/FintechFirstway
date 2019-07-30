@@ -244,12 +244,12 @@ app.post('/auth/oauth/v1/token',
                                    console.log(" Protocolo: "+res_data.protocolo);
                                    let pessoas = res_data.listaUsuario.usuario;
                                    for(let i=0;i<pessoas.length;i++){
-                                          console.log("---------------------------------------")
+                                          console.log("-----------------------------------------")
                                           console.log("      Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
                                           console.log("      tipoPessoa:"+pessoas[i].tipoPessoa);
                                           console.log("      codigoTipoVinculo:"+pessoas[i].codigoTipoVinculo);
                                    }
-                                   console.log("---------------------------------------");
+                                   console.log("-----------------------------------------");
                                    console.log("Retorno");
                                    console.log("---------------------------------------");
                                    console.log(retorno);
