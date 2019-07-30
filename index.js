@@ -238,7 +238,7 @@ app.post('/auth/oauth/v1/token',
                             */
                            let retorno=" ";
                            try {
-                                   retorno = '{ "stStatus": "OK", "dsMensagem": "'+res_data.protocolo+'XPTO" } ';
+                                   retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "'+res_data.protocolo+'XPTO" } ';
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Data Inicio: "+res_data.dataInicio);
                                    console.log(" Protocolo: "+res_data.protocolo);
@@ -262,7 +262,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log(" Erro ");
                                    console.log(e);
                                    console.log("--------------------------------------------");
-                                   retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
+                                   retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "Erro: '+e+'" } ';
                                    resp.status(200).send(retorno);
                             }
                             
@@ -320,7 +320,7 @@ app.post('/auth/oauth/v1/token',
                                    } catch(e){
                                           throw new Error('E obrigatorio informar o numero da conta ');            
                                    }
-                                   retorno = '{ "stStatus": "OK", "dsMensagem": "Blocked/Unblocked" } ';
+                                   retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "Blocked/Unblocked" } ';
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Status: "+res_data.codigoStatusRelacionamentoConta);
                                    console.log(" Motivo: "+res_data.descricaoMotivoBloqueio);
@@ -330,7 +330,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log('--------------------------------------');
                                    
                             }catch( e){
-                                   retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
+                                   retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "Erro: '+e+'" } ';
                                    resp.status(200).send(retorno);
 
                             }
@@ -394,13 +394,13 @@ app.post('/auth/oauth/v1/token',
                                           throw new Error('Erro na leitura de pessoas '+e);
                                    }
                                    console.log('--------------------------------------');
-                                   retorno = '{ "stStatus": "OK", "dsMensagem": "" } ';
+                                   retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "" } ';
                                    console.log('--------------------------------------');
                                    
                                    resp.status(200).send(retorno);
                             }catch( e){
                                    console.log('--------------------------------------');
-                                   retorno = '{ "stStatus": "NOK", "dsMensagem": "Erro: '+e+'" } ';
+                                   retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "Erro: '+e+'" } ';
                                    console.log('--------------------------------------');
                                    resp.status(200).send(retorno);
                             }
