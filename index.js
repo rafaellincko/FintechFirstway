@@ -238,10 +238,24 @@ app.post('/auth/oauth/v1/token',
                             */
                            let retorno=" ";
                            try {
+                                   if(res_data.codigoTipoMovimento===null){
+                                          throw  new Error('É obrigatorio informar o tipo do movimento');
+                                   } else {
+                                          if(res_data.codigoTipoMovimento===1 || res_data.codigoTipoMovimento===2){
+                                                 console.log('codigoTipoMovimento ok! ');
+                                          } else {
+                                                 throw new Error('O codigoTipoMovimento deve ser 1 - Inclusao ou 2 - alteracao '+res_data.codigoTipoMovimento);
+
+                                          }
+                                   }
+                                   if(res_data.numeroConta===null || res_data.numeroConta===""){
+                                          throw new Error('numeroConta Invalido!');
+                                   }
                                    retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "'+res_data.protocolo+'XPTO" } ';
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Data Inicio: "+res_data.dataInicio);
                                    console.log(" Protocolo: "+res_data.protocolo);
+
                                    let pessoas = res_data.listaUsuario.usuario;
                                    for(let i=0;i<pessoas.length;i++){
                                           console.log("-----------------------------------------")
@@ -262,7 +276,7 @@ app.post('/auth/oauth/v1/token',
                                    console.log(" Erro ");
                                    console.log(e);
                                    console.log("--------------------------------------------");
-                                   retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "Erro: '+e+'" } ';
+                                   retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "'+e+'" } ';
                                    resp.status(200).send(retorno);
                             }
                             
