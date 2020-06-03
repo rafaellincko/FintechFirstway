@@ -450,8 +450,8 @@ app.post('/auth/oauth/v1/token',
                                           res_data.tipoCliente.substring(0,1)!="J"){
                                                  throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
                                    }
-                                   if(res_data.numeroAgencia!=""){
-                                          throw new Error('Numero de agência nao pode ser diferente de nullo');
+                                   if(res_data != undefined && res_data.numeroAgencia!=""){
+                                          throw new Error('Numero de agência nao pode ser diferente de nullo. ');
                                    }
                                    if(res_data.cpfCnpjRaizCliente==""){
                                           throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
@@ -728,7 +728,7 @@ app.post('/desbloquearSolicitacaoJudicial',
                             throw new Error('indicadorValorTotal deve ser Sim, ou Nou');
                      }
 
-                     if(res_data.valorBloqueio<=0){
+                     if(res_data.valorSolicitado<=0){
                             throw new Error('valorBloqueio tem que ser maior que zero');
                      }
 
@@ -736,7 +736,7 @@ app.post('/desbloquearSolicitacaoJudicial',
                      console.log(" Data "+dt)
                      retorno = {
                             "codigoResposta": "OK",
-                            "descricaoReposta": "Solicitação atendida parcialmente",
+                            "descricaoReposta": "Desbloqueio atendido",
                             "dataHoraEXCC": dt,
                             "identificadorDesbloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
                      }
@@ -745,7 +745,7 @@ app.post('/desbloquearSolicitacaoJudicial',
               }catch( e){
                      retorno = {
                             "codigoResposta": "ERRO",
-                            "descricaoReposta": "Erro "+e,
+                            "descricaoReposta": "Erro no desbloqueio"+e,
                             "identificadorBloqueioLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.codigoSequenciaProtocolo,
                             "dataHoraEXCC": dt,
                             "identificadorDesbloqueioLegado": ""
