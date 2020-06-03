@@ -450,9 +450,13 @@ app.post('/auth/oauth/v1/token',
                                           res_data.tipoCliente.substring(0,1)!="J"){
                                                  throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
                                    }
-                                   if(res_data.numeroAgencia != undefined && res_data.numeroAgencia!=""){
-                                          throw new Error('Numero de agência nao pode ser diferente de nullo. ['+res_data.numeroAgencia+']');
-                                   }
+                                   if(res_data.numeroAgencia != undefined){
+                                          res_data.numeroAgencia = trim(res_data.numeroAgencia)
+                                          if(res_data.numeroAgencia!=""){
+                                                 throw new Error('Numero de agência nao pode ser diferente de nulo. ['+res_data.numeroAgencia+']');
+                                          }
+                                   } 
+                                   res_data.cpfCnpjRaizCliente = trim(cpfCnpjRaizCliente)
                                    if(res_data.cpfCnpjRaizCliente==""){
                                           throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
                                    }
