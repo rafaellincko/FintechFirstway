@@ -456,7 +456,7 @@ app.post('/auth/oauth/v1/token',
                                                  throw new Error('Numero de agência nao pode ser diferente de nulo. ['+res_data.numeroAgencia+']');
                                           }
                                    } 
-                                   res_data.cpfCnpjRaizCliente = cpfCnpjRaizCliente.trim()
+                                   res_data.cpfCnpjRaizCliente = res_data.cpfCnpjRaizCliente.trim()
                                    if(res_data.cpfCnpjRaizCliente==""){
                                           throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
                                    }
