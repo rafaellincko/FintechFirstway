@@ -493,13 +493,18 @@ app.post('/auth/oauth/v1/token',
                                           throw new Error('valorBloqueio tem que ser maior que zero');
                                    }
 
-                                   const valorEfetivo = res_data.valorBloqueio / 2
+                                   //const valorEfetivo = res_data.valorBloqueio / 2
+                                   //const msgBloqueio = "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo
+                                   //const descricaoResp = "Solicitação atendida parcialmente"
+                                   const valorEfetivo = res_data.valorBloqueio 
+                                   const msgBloqueio = "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo
+                                   const descricaoResp = "Solicitação atendida"
                                    
                                    console.log(" Data "+dt)
                                    retorno = {
                                           "codigoResposta": "OK",
-                                          "descricaoReposta": "Solicitação atendida parcialmente",
-                                          "identificadorBloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
+                                          "descricaoReposta": descricaoResp,
+                                          "identificadorBloqueioLegado": msgBloqueio,
                                           "valorEfetivado": valorEfetivo,
                                           "QtdeAtivosEfetivada": "1",
                                           "dataHoraEXCC": dt,
