@@ -427,17 +427,356 @@ app.post('/auth/oauth/v1/token',
               }
               );
 
+       /*
+       -------------------------------------------------------------------------------------------------
+       Funcionalidade do BJUD
+       -------------------------------------------------------------------------------------------------
+       */
+      app.post('/bloquearSolicitacaoJudicial', 
+              (req, resp)=> {
+             
+                     if(hasAuthorization(req)){
+                            console.log("- bloquearSolicitacaoJudicial -------------------------");
+                            console.log(req.body);
+                            console.log("------------------------------")
+                            const res_data = req.body;
+                            let retorno=" ";
+                            let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+                            try {
+                                   if(res_data.cnpjBaseSolicitacao===""){
+                                          throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
+                                   }
+                                   if(res_data.tipoCliente.substring(0,1)!="F" &&
+                                          res_data.tipoCliente.substring(0,1)!="J"){
+                                                 throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
+                                   }
+                                   if(res_data.numeroAgencia != undefined){
+                                          res_data.numeroAgencia = res_data.numeroAgencia.trim()
+                                          if(res_data.numeroAgencia!=""){
+                                                 throw new Error('Numero de agência nao pode ser diferente de nulo. ['+res_data.numeroAgencia+']');
+                                          }
+                                   } 
+                                   res_data.cpfCnpjRaizCliente = res_data.cpfCnpjRaizCliente.trim()
+                                   if(res_data.cpfCnpjRaizCliente==""){
+                                          throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
+                                   }
+                                   if(res_data.numeroConta==""){
+                                          throw new Error('numeroConta nao pode ser nullo');
+                                   }
+                                   if(res_data.indicadorValorTotal.substring(0,1)!="S" && 
+                                          res_data.indicadorValorTotal.substring(0,1)!="N"){
+                                          throw new Error('indicadorValorTotal deve ser Sim, ou Nou');
+                                   }
+                                   if(res_data.codigoProtocolo==""){
+                                          throw new Error('codigoProtocolo nao pode ser nullo');
+                                   }
+                                   if(res_data.codigoSequenciaProtocolo==""){
+                                          throw new Error('codigoSequenciaProtocolo nao pode ser nullo');
+                                   }
+                                   if(res_data.nomeInstituicao==""){
+                                          throw new Error('nomeInstituicao nao pode ser nullo');
+                                   }
+                                   
+                                   if(res_data.dataBloqueio==""){
+                                          throw new Error('dataBloqueio nao pode ser nullo');
+                                   }
+                                   if(res_data.numeroProcesso==""){
+                                          throw new Error('numeroProcesso nao pode ser nullo');
+                                   }
+                                   if(res_data.nomeVaraJuizo==""){
+                                          throw new Error('nomeVaraJuizo nao pode ser nullo');
+                                   }
+                                   if(res_data.NomeAutor==""){
+                                          throw new Error('NomeAutor nao pode ser nullo');
+                                   }
+                                   if(res_data.valorBloqueio<=0){
+                                          throw new Error('valorBloqueio tem que ser maior que zero');
+                                   }
 
-              app.post('/bloquearDesbloquearContaViaSPAG', 
+                                   const valorEfetivo = res_data.valorBloqueio / 2
+                                   
+                                   console.log(" Data "+dt)
+                                   retorno = {
+                                          "codigoResposta": "OK",
+                                          "descricaoReposta": "Solicitação atendida parcialmente",
+                                          "identificadorBloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
+                                          "valorEfetivado": valorEfetivo,
+                                          "QtdeAtivosEfetivada": "1",
+                                          "dataHoraEXCC": dt,
+                                          "numeroDiasResgate": 0
+                                   }
+
+                           
+                            }catch( e){
+                                   retorno = {
+                                          "codigoResposta": "ERRO",
+                                          "descricaoReposta": "Erro "+e,
+                                          "identificadorBloqueioLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.codigoSequenciaProtocolo,
+                                          "valorEfetivado": 0,
+                                          "QtdeAtivosEfetivada": "1",
+                                          "dataHoraEXCC": dt,
+                                          "numeroDiasResgate": 0
+                                   }
+
+                            }
+                     console.log('--------------------------------------');
+                     console.log(JSON.stringify(retorno))
+                     resp.status(200).send(retorno);
+                     console.log('--------------------------------------');
+             }else{
+                    semAutorizacao(req, resp);
+             }
+       });
+
+       app.post('/desbloquearIntraday', 
+       (req, resp)=> {
+      
+              if(hasAuthorization(req)){
+                     console.log("- desbloquearIntraday -------------------------");
+                     console.log(req.body);
+                     console.log("------------------------------")
+                     const res_data = req.body;
+                     let retorno=" ";
+                     let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+                     try {
+
+                            if(res_data.cnpjBaseSolicitacao===""){
+                                   throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
+                            }
+                            if(res_data.tipoCliente.substring(0,1)!="F" &&
+                                   res_data.tipoCliente.substring(0,1)!="J"){
+                                          throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
+                            }
+                            if(res_data.cpfCnpjRaizCliente==""){
+                                   throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
+                            }
+                            if(res_data.numeroAgencia!=""){
+                                   throw new Error('Numero de agência nao pode ser diferente de nullo');
+                            }
+                            if(res_data.numeroConta==""){
+                                   throw new Error('numeroConta nao pode ser nullo');
+                            }
+                            if(res_data.codigoProtocolo==""){
+                                   throw new Error('codigoProtocolo nao pode ser nullo');
+                            }
+                            if(res_data.codigoSequenciaProtocolo==""){
+                                   throw new Error('codigoSequenciaProtocolo nao pode ser nullo');
+                            }
+                            if(res_data.codigoSequenciaDesbloqueioProtocolo==""){
+                                   throw new Error('codigoSequenciaDesbloqueioProtocolo nao pode ser nullo');
+                            }
+                            if(res_data.nomeInstituicao==""){
+                                   throw new Error('nomeInstituicao nao pode ser nullo');
+                            }
+                            if(res_data.dataBloqueio==""){
+                                   throw new Error('dataBloqueio nao pode ser nullo');
+                            }
+                            if(res_data.numeroProcesso==""){
+                                   throw new Error('numeroProcesso nao pode ser nullo');
+                            }
+                            if(res_data.nomeVaraJuizo==""){
+                                   throw new Error('nomeVaraJuizo nao pode ser nullo');
+                            }
+                            if(res_data.NomeAutor==""){
+                                   throw new Error('NomeAutor nao pode ser nullo');
+                            }
+                            if(res_data.valorBloqueio<=0){
+                                   throw new Error('valorBloqueio tem que ser maior que zero');
+                            }
+
+                     console.log(" Data "+dt)
+                            retorno = {
+                                   "codigoResposta": "OK",
+                                   "descricaoReposta": "Solicitação atendida parcialmente",
+                                   "identificadorDesbloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
+                                   "dataHoraEXCC": dt
+                            }
+
+                    
+                     }catch( e){
+                            retorno = {
+                                   "codigoResposta": "ERRO",
+                                   "descricaoReposta": "Erro "+e,
+                                   "identificadorDesbloqueioLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.codigoSequenciaProtocolo,
+                                   "dataHoraEXCC": dt
+                            }
+
+                     }
+              console.log('--------------------------------------');
+              console.log(JSON.stringify(retorno))
+              resp.status(200).send(retorno);
+              console.log('--------------------------------------');
+      }else{
+             semAutorizacao(req, resp);
+      }
+});
+
+app.post('/consultaSaldoBloqueado',
+       (req, resp) => {
+
+              if(hasAuthorization(req)){
+                     console.log("- consultaSaldoBloqueado -------------------------");
+                     const res_data = req.body;
+                     let retorno=" ";
+                     console.log("------------------------")
+                     let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+                     try {
+       
+                            if(res_data.cnpjBaseSolicitacao===""){
+                                   throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
+                            }
+                            if(res_data.tipoCliente.substring(0,1)!="F" &&
+                                   res_data.tipoCliente.substring(0,1)!="J"){
+                                          throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
+                            }
+                            if(res_data.cpfCnpjRaizCliente===""){
+                                   throw new Error(" cpfCnpjRaizCliente nao pode ser nula ")
+                            }
+                            let arrayContas=[]
+                            let arrayBloqueios=[]
+                            
+                            for(let i=0;i<res_data.listaConta.length;i++){
+                                   if(res_data.listaConta[i].numeroAgencia!=""){
+                                          throw new Error(" numeroAgencia nao eh valida! "+res_data.listaConta[i].numeroAgencia)
+                                   }
+                                   const itemConta = {
+                                          "numeroAgencia": res_data.listaConta[i].numeroAgencia,
+                                          "numeroConta": res_data.listaConta[i].numeroConta,
+                                          "valorSaldo": 100*i,
+                                          "valorSaldoBloqueado": 100*i,
+                                          "status": "Ok",
+                                          "descricaoErro": ""
+                                   }
+                                   arrayContas.push(itemConta)
+                                   const itemBloqueio = {
+                                          "codigoProtocolo": "10203040-"+i,
+                                          "codigoSequenciaProtocolo": "1",
+                                          "cnpjBaseSolicitacao": "19019000119",
+                                          "identificacadorLegado": "88888",
+                                          "valorEfetivo": 10*i,
+                                          "qtdeAtivosEfetivada": "1",
+                                          "dataHoraEXCC": dt,
+                                          "numeroDiasResgates": "0"
+                                   }
+                                   arrayBloqueios.push(itemBloqueio)
+                            }
+                            
+                            console.log(" Data "+dt)
+                            retorno = {
+                                   "Contas": arrayContas,
+                                   "Bloqueios":arrayBloqueios
+                            }
+
+       
+                     }catch( e){
+                            const vet = []
+                            console.log("Erro "+e)
+                            retorno = {
+                                   "Contas": vet,
+                                   "Bloqueios": vet,
+                                   "Erro": ""+e
+                            }
+       
+                     }
+              console.log('--------------------------------------');
+              console.log(JSON.stringify(retorno))
+              resp.status(200).send(retorno);
+              console.log('--------------------------------------');
+       }else{
+             semAutorizacao(req, resp);
+       }
+       
+       })
+
+app.post('/desbloquearSolicitacaoJudicial', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              console.log("- desbloquearSolicitacaoJudicial -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+
+                     if(res_data.cnpjBaseSolicitacao===""){
+                            throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
+                     }
+                     if(res_data.tipoCliente.substring(0,1)!="F" &&
+                            res_data.tipoCliente.substring(0,1)!="J"){
+                                   throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
+                     }
+                     if(res_data.cpfCnpjRaizCliente==""){
+                            throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
+                     }
+                     if(res_data.numeroAgencia!=""){
+                            throw new Error('Numero de agência nao pode ser diferente de nullo');
+                     }
+                     if(res_data.numeroConta==""){
+                            throw new Error('numeroConta nao pode ser nullo');
+                     }
+                     if(res_data.codigoProtocolo==""){
+                            throw new Error('codigoProtocolo nao pode ser nullo');
+                     }
+                     if(res_data.codigoSequenciaProtocolo==""){
+                            throw new Error('codigoSequenciaProtocolo nao pode ser nullo');
+                     }
+                     if(res_data.codigoSequenciaDesbloqueioProtocolo==""){
+                            throw new Error('codigoSequenciaDesbloqueioProtocolo nao pode ser nullo');
+                     }
+                     if(res_data.identificadorBloqueioLegado==""){
+                            throw new Error('identificadorBloqueioLegado nao pode ser nullo');
+                     }
+
+                     if(res_data.indicadorValorTotal.substring(0,1)!="S" && 
+                            res_data.indicadorValorTotal.substring(0,1)!="N"){
+                            throw new Error('indicadorValorTotal deve ser Sim, ou Nou');
+                     }
+
+                     if(res_data.valorSolicitado<=0){
+                            throw new Error('valorBloqueio tem que ser maior que zero');
+                     }
+
+       
+                     console.log(" Data "+dt)
+                     retorno = {
+                            "codigoResposta": "OK",
+                            "descricaoReposta": "Desbloqueio atendido",
+                            "dataHoraEXCC": dt,
+                            "identificadorDesbloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
+                     }
+
+             
+              }catch( e){
+                     retorno = {
+                            "codigoResposta": "ERRO",
+                            "descricaoReposta": "Erro no desbloqueio"+e,
+                            "identificadorBloqueioLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.codigoSequenciaProtocolo,
+                            "dataHoraEXCC": dt,
+                            "identificadorDesbloqueioLegado": ""
+                     }
+
+              }
+       console.log('--------------------------------------');
+       console.log(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       console.log('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
+
+/**
+ * Funcionalidade para bloqueio e desbloqueio via sistema SPAG
+ */
+app.post('/bloquearDesbloquearContaViaSpag', 
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
                             console.log("Result ");
                             console.log(req.body);
                             console.log("--------------------------");
-                            console.log("--------- SOLICITACAO VIA SPAG -----------");
                             const res_data = req.body;
-                           
+
                            let retorno=" ";
                            try {
                                   try {
@@ -463,18 +802,21 @@ app.post('/auth/oauth/v1/token',
                                    } catch(e){
                                           throw new Error('E obrigatorio informar o numero da conta ');            
                                    }
-                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "ABC123XYZ", "confirmacaoDePedidoBloqDesbloq": "OK" ,"descricaoMensagemRetorno": "Blocked/Unblocked" } ';
+                                 
+                                   const numRandom = require('crypto').createHash('md5').update(Math.random().toString()).digest('hex');
+                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "'+numRandom+'", "confirmacaoDePedidoBloqDesbloq": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                                   console.log(" Status: "+res_data.codigoStatusRelacionamentoConta);
-                                   console.log(" Motivo: "+res_data.descricaoMotivoBloqueio);
-                                   console.log(" Data: "+res_data.dataInicio);
+                                   console.log(" Status:        "+res_data.codigoStatusRelacionamentoConta);
+                                   console.log(" Motivo:        "+res_data.descricaoMotivoBloqueio);
+                                   console.log(" Data:          "+res_data.dataInicio);
+                                   console.log(" URLParceiro:   "+res_data.urlParceiro);
+                                   console.log(" Usuario:       "+res_data.nomeParceiroServico);
                                    console.log('--------------------------------------');
                                    resp.status(200).send(retorno);
                                    console.log('--------------------------------------');
                                    
                             }catch( e){
-                                   
-                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "", "confirmacaoDePedidoBloqDesbloq": "NOK" ,"descricaoMensagemRetorno": "Erro: '+e+'" } ';
+                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "NOK", "confirmacaoDePedidoBloqDesbloq": "NOK","descricaoMensagemRetorno": "Erro: '+e+'" } ';                     
                                    resp.status(200).send(retorno);
 
                             }
@@ -484,4 +826,8 @@ app.post('/auth/oauth/v1/token',
               }
               );
 
-app.listen(port);
+
+
+app.listen(port, ()=>{
+       console.log("Listem "+port)
+});
