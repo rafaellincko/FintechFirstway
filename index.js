@@ -428,7 +428,7 @@ app.post('/auth/oauth/v1/token',
               );
 
 
-              app.post('/bloquearDesbloquearContaViaDadosBancarios', 
+              app.post('/bloquearDesbloquearContaViaSPAG', 
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
