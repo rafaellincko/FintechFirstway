@@ -594,7 +594,7 @@ app.post('/auth/oauth/v1/token',
                                    "codigoResposta": "OK",
                                    "descricaoReposta": "Solicitação atendida",
                                    "identificadorDesbloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
-                                   "dataHoraEXCC": dt
+                                   "dataHoraEXCCLegado": dt
                             }
 
                     
@@ -603,7 +603,7 @@ app.post('/auth/oauth/v1/token',
                                    "codigoResposta": "ERRO",
                                    "descricaoReposta": "Erro "+e,
                                    "identificadorDesbloqueioLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.codigoSequenciaProtocolo,
-                                   "dataHoraEXCC": dt
+                                   "dataHoraEXCCLegado": dt
                             }
 
                      }
