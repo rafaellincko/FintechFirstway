@@ -770,6 +770,69 @@ app.post('/desbloquearSolicitacaoJudicial',
 }
 });
 
+/**
+ * Funcionalidade para bloqueio e desbloqueio via sistema SPAG
+ */
+app.post('/bloquearDesbloquearContaViaSpag', 
+              (req, resp)=> {
+                     
+                     if(hasAuthorization(req)){
+                            console.log("Result ");
+                            console.log(req.body);
+                            console.log("--------------------------");
+                            const res_data = req.body;
+
+                           let retorno=" ";
+                           try {
+                                  try {
+                                         if(res_data.codigoStatusRelacionamentoConta!=1){
+                                                if(res_data.codigoStatusRelacionamentoConta!=2){
+                                                       throw new Error('Status do relacionamento nao pode ser diferente de 1 ou 2!');
+                                                }
+                                         }
+                                  } catch(e){
+                                         throw new Error('É obrigatório informar codigoStatusRelacionamentoConta!'+e);
+                                  }
+                                  try {
+                                         if(res_data.descricaoMotivoBloqueio.length===0){
+                                           throw new Error('É obrigatório informar descricaoMotivoBloqueio!');
+                                         }
+                                  } catch(e){
+                                          throw new Error('É obrigatório informar descricaoMotivoBloqueio!')
+                                  }
+                                  try {
+                                          if(res_data.numeroConta.length===0){
+                                                 throw new Error('É obrigatorio informar o numero da conta!');
+                                          }
+                                   } catch(e){
+                                          throw new Error('E obrigatorio informar o numero da conta ');            
+                                   }
+                                 
+                                   const numRandom = require('crypto').createHash('md5').update(Math.random().toString()).digest('hex');
+                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "'+numRandom+'", "confirmacaoDePedidoBloqDesbloq": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
+                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   console.log(" Status:        "+res_data.codigoStatusRelacionamentoConta);
+                                   console.log(" Motivo:        "+res_data.descricaoMotivoBloqueio);
+                                   console.log(" Data:          "+res_data.dataInicio);
+                                   console.log(" URLParceiro:   "+res_data.urlParceiro);
+                                   console.log(" Usuario:       "+res_data.nomeParceiroServico);
+                                   console.log('--------------------------------------');
+                                   resp.status(200).send(retorno);
+                                   console.log('--------------------------------------');
+                                   
+                            }catch( e){
+                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "NOK", "confirmacaoDePedidoBloqDesbloq": "NOK","descricaoMensagemRetorno": "Erro: '+e+'" } ';                     
+                                   resp.status(200).send(retorno);
+
+                            }
+                     }else{
+                            semAutorizacao(req, resp);
+                     }
+              }
+              );
+
+
+
 app.listen(port, ()=>{
        console.log("Listem "+port)
 });
