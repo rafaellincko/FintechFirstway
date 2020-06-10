@@ -555,8 +555,8 @@ app.post('/auth/oauth/v1/token',
                             if(res_data.cpfCnpjRaizCliente==""){
                                    throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
                             }
-                            if(res_data.numeroAgencia!=""){
-                                   throw new Error('Numero de agência nao pode ser diferente de nullo');
+                            if(res_data.numeroAgencia!=undefined && res_data.numeroAgencia!=""){
+                                   throw new Error('Numero de agência nao pode ser diferente de vazio ['+res_data.numeroAgencia+']');
                             }
                             if(res_data.numeroConta==""){
                                    throw new Error('numeroConta nao pode ser nullo');
@@ -592,7 +592,7 @@ app.post('/auth/oauth/v1/token',
                      console.log(" Data "+dt)
                             retorno = {
                                    "codigoResposta": "OK",
-                                   "descricaoReposta": "Solicitação atendida parcialmente",
+                                   "descricaoReposta": "Solicitação atendida",
                                    "identificadorDesbloqueioLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo,
                                    "dataHoraEXCC": dt
                             }
