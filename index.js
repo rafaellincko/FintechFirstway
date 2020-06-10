@@ -809,7 +809,7 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                    }
                                  
                                    const numRandom = require('crypto').createHash('md5').update(Math.random().toString()).digest('hex');
-                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "'+numRandom+'", "confirmacaoDePedidoBloqDesbloq": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
+                                   retorno = '{ "numeroProtocoloConfirmacaoBloqueioDesbloqueio": "'+numRandom+'", "confirmacaoDePedidoBloqueioDesbloqueio": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Status:        "+res_data.codigoStatusRelacionamentoConta);
                                    console.log(" Motivo:        "+res_data.descricaoMotivoBloqueio);
@@ -821,7 +821,7 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                    console.log('--------------------------------------');
                                    
                             }catch( e){
-                                   retorno = '{ "nuProtocoloConfirmacaoBloqDesbloq": "NOK", "confirmacaoDePedidoBloqDesbloq": "NOK","descricaoMensagemRetorno": "Erro: '+e+'" } ';                     
+                                   retorno = '{ "numeroProtocoloConfirmacaoBloqueioDesbloqueio": "NOK", "confirmacaoDePedidoBloqueioDesbloqueio": "NOK","descricaoMensagemRetorno": "Erro: '+e+'" } ';                     
                                    resp.status(200).send(retorno);
 
                             }
