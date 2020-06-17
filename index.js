@@ -769,7 +769,7 @@ app.post('/desbloquearSolicitacaoJudicial',
       semAutorizacao(req, resp);
 }
 });
-app.post('/notificacao', 
+app.post('/notificar', 
 (req, resp)=> {
 
        if(hasAuthorization(req)){
