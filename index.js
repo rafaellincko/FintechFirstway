@@ -769,6 +769,38 @@ app.post('/desbloquearSolicitacaoJudicial',
       semAutorizacao(req, resp);
 }
 });
+app.post('/notificacao', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              console.log("- desbloquearSolicitacaoJudicial -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+                     console.log(" Data "+dt)
+                     console.log(JSON.stringify(res_data))
+                     retorno = {
+                            "codigoRetorno": 200,
+                            "descricaoMensagemRetorno": "OK"
+                     }
+
+             
+              }catch( e){
+                     retorno = {
+                            "codigoRetorno": 400,
+                            "descricaoMensagemRetorno": "Erro:"+e.Error
+                     }
+
+              }
+       console.log('--------------------------------------');
+       console.log(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       console.log('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
 
 /**
  * Funcionalidade para bloqueio e desbloqueio via sistema SPAG
