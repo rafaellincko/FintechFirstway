@@ -867,7 +867,7 @@ app.post('/solicitarTransferenciaJudicial',
 (req, resp)=> {
 
        if(hasAuthorization(req)){
-              console.log("- solicitarTransferenciaJudicialJJJJJJJJ -------------------------");
+              console.log("- solicitarTransferenciaJudicial -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
