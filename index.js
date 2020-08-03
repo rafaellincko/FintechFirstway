@@ -863,6 +863,100 @@ app.post('/bloquearDesbloquearContaViaSpag',
               }
               );
 
+app.post('/solicitarTransferenciaJudicial', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              console.log("- solicitarTransferenciaJudicialJJJJJJJJ -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+
+                     if(res_data.cnpjBaseSolicitacao===""){
+                            throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
+                     }
+                     if(res_data.tipoCliente.substring(0,1)!="F" &&
+                            res_data.tipoCliente.substring(0,1)!="J"){
+                                   throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
+                     }
+                     if(res_data.cpfCnpjRaizCliente==""){
+                            throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
+                     }
+                     if(res_data.numeroAgencia!=""){
+                            throw new Error('Numero de agência nao pode ser diferente de nullo');
+                     }
+                     if(res_data.numeroConta==""){
+                            throw new Error('numeroConta nao pode ser nullo');
+                     }
+                     if(res_data.codigoProtocolo==""){
+                            throw new Error('codigoProtocolo nao pode ser nullo');
+                     }
+                     if(res_data.identificadorBloqueioLegado==""){
+                            throw new Error('identificadorBloqueioLegado nao pode ser nullo');
+                     }
+                     if(res_data.numeroBancoDestino==""){
+                            throw new Error('numeroBancoDestino nao pode ser nullo');
+                     }
+                     if(res_data.numeroAgenciaDestino==""){
+                            throw new Error('numeroAgenciaDestino nao pode ser nullo');
+                     }
+                     if(res_data.numeroContaDestino=""){
+                            throw new Error('numeroContaDestino nao pode ser nullo');
+                     }
+                     if(res_data.cpfCnpjFavorecido=""){
+                            throw new Error('cpfCnpjFavorecido nao pode ser nullo');
+                     }
+                     if(res_data.tipoPessoaFavorecido=""){
+                            throw new Error('tipoPessoaFavorecido nao pode ser nullo');
+                     }
+
+                     if(res_data.valorTransferencia<=0){
+                            throw new Error('valorBloqueio tem que ser maior que zero');
+                     }
+
+                     if(res_data.identificadorTransferencia=""){
+                            throw new Error('identificadorTransferencia nao pode ser nullo');
+                     }
+                     if(res_data.sequenciaTransferencia=""){
+                            throw new Error('sequenciaTransferencia nao pode ser nullo');
+                     }
+                     if(res_data.numeroProcesso=""){
+                            throw new Error('numeroProcesso nao pode ser nullo');
+                     }
+                     if(res_data.cpfCnpjDestino=""){
+                            throw new Error('cpfCnpjDestino nao pode ser nullo');
+                     }
+
+
+       
+                     console.log(" Data "+dt)
+                     retorno = {
+                            "codigoResposta": "OK",
+                            "descricaoReposta": "Transferencia aceita",
+                            "dataHoraEXCC": dt,
+                            "identificadorSolicitacaoLegado": "Resp:"+res_data.codigoProtocolo+"-"+res_data.identificadorTransferencia,
+                     }
+
+             
+              }catch( e){
+                     retorno = {
+                            "codigoResposta": "ERRO",
+                            "descricaoReposta": "Erro no desbloqueio"+e,
+                            "identificadorSolicitacaoLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.identificadorTransferencia,
+                            "dataHoraEXCC": dt,
+                            "identificadorDesbloqueioLegado": ""
+                     }
+
+              }
+       console.log('--------------------------------------');
+       console.log(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       console.log('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
 
 
 app.listen(port, ()=>{
