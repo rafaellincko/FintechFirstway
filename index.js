@@ -942,7 +942,7 @@ app.post('/solicitarTransferenciaJudicial',
               }catch( e){
                      retorno = {
                             "codigoResposta": "ERRO",
-                            "descricaoReposta": "Erro no desbloqueio"+e,
+                            "descricaoReposta": "Erro no Transferencia."+e,
                             "identificadorSolicitacaoLegado": "Erro:"+res_data.codigoProtoocolo+"-"+res_data.identificadorTransferencia,
                             "dataHoraEXCC": dt,
                             "identificadorDesbloqueioLegado": ""
