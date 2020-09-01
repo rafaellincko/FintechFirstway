@@ -826,11 +826,11 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                          throw new Error('É obrigatório informar codigoStatusRelacionamentoConta!'+e);
                                   }
                                   try {
-                                         if(res_data.descricaoMotivoBloqueio.length===0){
-                                           throw new Error('É obrigatório informar descricaoMotivoBloqueio!');
+                                         if(res_data.descricaoMotivoBloqueioDesbloqueio.length===0){
+                                           throw new Error('É obrigatório informar descricaoMotivoBloqueioDesbloqueio!');
                                          }
                                   } catch(e){
-                                          throw new Error('É obrigatório informar descricaoMotivoBloqueio!')
+                                          throw new Error('É obrigatório informar descricaoMotivoBloqueioDesbloqueio!')
                                   }
                                   try {
                                           if(res_data.numeroConta.length===0){
@@ -844,7 +844,7 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                    retorno = '{ "numeroProtocoloConfirmacaoBloqueioDesbloqueio": "'+numRandom+'", "confirmacaoDePedidoBloqueioDesbloqueio": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
                                    console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
                                    console.log(" Status:        "+res_data.codigoStatusRelacionamentoConta);
-                                   console.log(" Motivo:        "+res_data.descricaoMotivoBloqueio);
+                                   console.log(" Motivo:        "+res_data.descricaoMotivoBloqueioDesbloqueio);
                                    console.log(" Data:          "+res_data.dataInicio);
                                    console.log(" URLParceiro:   "+res_data.urlParceiro);
                                    console.log(" Usuario:       "+res_data.nomeParceiroServico);
