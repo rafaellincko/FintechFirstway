@@ -866,7 +866,7 @@ app.post('/v2/notificar',
               try {
                      console.log("2")
                      let resChamada=undefined
-                     console.log("3")
+                     console.log('='+res_data.evento+'-')
                      if(res_data.evento==1){
                             console.log("Evento 1")
                             resChamada=chamaDetalhes(res_data.protocolo, res_data.hashMensagem)
