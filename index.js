@@ -843,8 +843,7 @@ app.post('/v2/notificar',
        if(hasAuthorization(req)){
               console.log("- notificar -------------------------");
               console.log(JSON.stringify(req.body))
-              console.log(req.body)
-              const res_data = JSON.parse(req.body)
+              const res_data = req.body
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
               try {
@@ -863,8 +862,11 @@ app.post('/v2/notificar',
                      }
 
               }
+              console.log("1")
               try {
+                     console.log("2")
                      let resChamada=undefined
+                     console.log("3")
                      if(res_data.evento==1){
                             console.log("Evento 1")
                             resChamada=chamaDetalhes(res_data.protocolo, res_data.hashMensagem)
