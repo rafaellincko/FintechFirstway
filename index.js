@@ -807,7 +807,8 @@ app.post('/notificar',
       semAutorizacao(req, resp);
 }
 });
-chamaDetalhes=( protocolo , hasMsg )=>{
+
+chamarDetalhes=( protocolo , hasMsg )=>{
        const localToken = getToken()
        console.log("::Prot:"+protocolo+" hash"+hasMsg)
        let obj = undefined
@@ -866,13 +867,14 @@ app.post('/v2/notificar',
               try {
                      console.log("2")
                      let resChamada=undefined
-                     console.log('='+res_data.evento+'-')
-                     if(res_data.evento==1){
+                     console.log('='+res_data.evento+'-'+res_data.protocolo+"="+res_data.hashMensagem)
+                     if(res_data.evento=='1'){
                             console.log("Evento 1")
-                            resChamada=chamaDetalhes(res_data.protocolo, res_data.hashMensagem)
+                            resChamada= chamarDetalhes(res_data.protocolo, 
+                                                        res_data.hashMensagem)
                             console.log('Retorno chamada!'+JSON.stringify(resChamada))
                      } else {
-                            log.console("Envento "+res_data.evento+" sem chamada!")
+                            log.console("Evento "+res_data.evento+" sem chamada!")
                      }
               }catch(e){
                      retorno = {
