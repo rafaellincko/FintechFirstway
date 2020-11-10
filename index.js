@@ -868,14 +868,14 @@ app.post('/v2/notificar',
                      console.log("2")
                      let resChamada=undefined
                      console.log('='+res_data.evento+'-'+res_data.protocolo+"="+res_data.hashMensagem)
-                     if(res_data.evento=='1'){
+                     //if(res_data.evento==='1'){
                             console.log("Evento 1")
                             resChamada= chamarDetalhes(res_data.protocolo, 
                                                         res_data.hashMensagem)
                             console.log('Retorno chamada!'+JSON.stringify(resChamada))
-                     } else {
-                            log.console("Evento "+res_data.evento+" sem chamada!")
-                     }
+                     //} else {
+                     //       log.console("Evento "+res_data.evento+" sem chamada!")
+                     //}
               }catch(e){
                      retorno = {
                             "codigoRetorno": 501,
