@@ -773,7 +773,7 @@ app.post('/notificar',
 (req, resp)=> {
 
        if(hasAuthorization(req)){
-              console.log("- desbloquearSolicitacaoJudicial -------------------------");
+              console.log("- notificar -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
