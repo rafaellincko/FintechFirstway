@@ -835,6 +835,7 @@ app.post('/v2/notificar',
               try {
                      let resChamada=""
                      if(res_data.evento==1){
+                            console.log("Envento 1")
                             resChamada=chamaDetalhes(res_data.protocolo, res_data.hashMensagem)
                             console.log('Retorno chamada!'+JSON.stringify(resChamada))
                      } else {
@@ -882,14 +883,16 @@ getToken=()=>{
 
 chamaDetalhes=( protocolo , hasMsg )=>{
        const localToken = getToken()
+       console.log("::Prot:"+protocolo+" hash"+hasMsg)
        let obj = undefined
        try {
               const servidor=servidorOrigem+
                      '/v1/atacado/operacional/consultar-detalhes-notificacao/obter'
               const msgLocal = {
-                     "client_id": msg,
-                     "client_secret": ipLocal,
-                     "grant_type": "client_credentials"
+                     "codigoIdentificacaoFintech": 6234,
+                     "numeroCNPJFintech": '06234797000114',
+                     "hashMensagem": hasMsg,
+                     "protocolo": protocolo
               }
               console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
               
