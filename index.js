@@ -807,13 +807,42 @@ app.post('/notificar',
       semAutorizacao(req, resp);
 }
 });
+chamaDetalhes=( protocolo , hasMsg )=>{
+       const localToken = getToken()
+       console.log("::Prot:"+protocolo+" hash"+hasMsg)
+       let obj = undefined
+       try {
+              const servidor=servidorOrigem+
+                     '/v1/atacado/operacional/consultar-detalhes-notificacao/obter'
+              const msgLocal = {
+                     "codigoIdentificacaoFintech": 6234,
+                     "numeroCNPJFintech": '06234797000114',
+                     "hashMensagem": hasMsg,
+                     "protocolo": protocolo
+              }
+              console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
+              
+              var res = request('POST', servidor, {
+                     headers: {
+                            "Authorization": localToken.token_type+' '+localToken.access_token
+                     },
+                     json: msgLocal
+              });
+              console.log('==>'+res.getBody())
+              obj = JSON.parse(res.getBody())
+              
+       }catch(e){
+              console.log('Erro Chamada Busca '+e.Error)
+       }
+       return obj
+}
 
 app.post('/v2/notificar', 
 (req, resp)=> {
 
        if(hasAuthorization(req)){
               console.log("- notificar -------------------------");
-              const res_data = req.body;
+              const res_data = JSON.parse(req.body);
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
               try {
@@ -833,9 +862,9 @@ app.post('/v2/notificar',
 
               }
               try {
-                     let resChamada=""
+                     let resChamada=undefined
                      if(res_data.evento==1){
-                            console.log("Envento 1")
+                            console.log("Evento 1")
                             resChamada=chamaDetalhes(res_data.protocolo, res_data.hashMensagem)
                             console.log('Retorno chamada!'+JSON.stringify(resChamada))
                      } else {
@@ -882,35 +911,6 @@ getToken=()=>{
        return token2;
 }
 
-chamaDetalhes=( protocolo , hasMsg )=>{
-       const localToken = getToken()
-       console.log("::Prot:"+protocolo+" hash"+hasMsg)
-       let obj = undefined
-       try {
-              const servidor=servidorOrigem+
-                     '/v1/atacado/operacional/consultar-detalhes-notificacao/obter'
-              const msgLocal = {
-                     "codigoIdentificacaoFintech": 6234,
-                     "numeroCNPJFintech": '06234797000114',
-                     "hashMensagem": hasMsg,
-                     "protocolo": protocolo
-              }
-              console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
-              
-              var res = request('POST', servidor, {
-                     headers: {
-                            "Authorization": localToken.token_type+' '+localToken.access_token
-                     },
-                     json: msgLocal
-              });
-              console.log('==>'+res.getBody())
-              obj = JSON.parse(res.getBody())
-              
-       }catch(e){
-              console.log('Erro Chamada Busca '+e.Error)
-       }
-       return obj
-}
 
 /**
  * Funcionalidade para bloqueio e desbloqueio via sistema SPAG
