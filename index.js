@@ -842,7 +842,9 @@ app.post('/v2/notificar',
 
        if(hasAuthorization(req)){
               console.log("- notificar -------------------------");
-              const res_data = JSON.parse(req.body);
+              console.log(JSON.stringify(req.body))
+              console.log(req.body)
+              const res_data = JSON.parse(req.body)
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
               try {
