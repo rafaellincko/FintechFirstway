@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jnscmps/fintech2#readme",
   "dependencies": {
+    "axios": "^0.21.0",
     "dateformat": "^3.0.3",
     "express": "^4.17.0"
   },
