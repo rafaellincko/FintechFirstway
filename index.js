@@ -1,18 +1,23 @@
 const usuarios = require('./usuarios.js');
 const anexos = require('./anexos.js');
 const jtoken = require('./token.js');
+const request = require('sync-request');
 
 const express = require('express');
 
+const servidorOrigem = 'http://'+'api-uat'+
+'.b'+'an'+'cov'+'o'+'tora'+'n'+'tim'+
+'.com.br';
 var port = process.env.PORT || 3000;
 const app = express();
 const TOKEN = 'dGVzdGU6MTIz'; // teste 123
-
+var token2=undefined;
 var dateFormat = require('dateformat');
 
 // app.use(express.json());
 
 var bodyParser = require('body-parser');
+const { Http2ServerRequest } = require('http2');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
 //app.use('/validaConta', express.json());
@@ -769,6 +774,7 @@ app.post('/desbloquearSolicitacaoJudicial',
       semAutorizacao(req, resp);
 }
 });
+
 app.post('/notificar', 
 (req, resp)=> {
 
@@ -801,6 +807,106 @@ app.post('/notificar',
       semAutorizacao(req, resp);
 }
 });
+
+app.post('/v2/notificar', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              console.log("- notificar -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+                     console.log(" Data "+dt)
+                     console.log(JSON.stringify(res_data))
+                     retorno = {
+                            "codigoRetorno": 200,
+                            "descricaoMensagemRetorno": "OK"
+                     }
+
+             
+              }catch( e){
+                     retorno = {
+                            "codigoRetorno": 400,
+                            "descricaoMensagemRetorno": "Erro:"+e.Error
+                     }
+
+              }
+              try {
+                     let resChamada=""
+                     if(res_data.evento==1){
+                            resChamada=chamaDetalhes(res_data.protocolo, res_data.hashMensagem)
+                            console.log('Retorno chamada!'+JSON.stringify(resChamada))
+                     } else {
+                            log.console("Envento "+res_data.evento+" sem chamada!")
+                     }
+              }catch(e){
+                     retorno = {
+                            "codigoRetorno": 501,
+                            "descricaoMensagemRetorno": "Erro:"+e.Error
+                     }
+
+              }
+       console.log('--------------------------------------');
+       console.log(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       console.log('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
+
+getToken=()=>{
+       if(token2==undefined){
+       try {
+              const servidor=servidorOrigem+
+                     '/auth/oauth/v2/token'
+              const msgLocal = {
+                     "client_id": msg,
+                     "client_secret": ipLocal,
+                     "grant_type": "client_credentials"
+              }
+              console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
+              
+              var res = request('POST', servidor, {
+                     json: msgLocal,
+              });
+              console.log('==>'+res.getBody())
+              let obj = JSON.parse(res.getBody())
+              token2 = obj;
+       }catch(e){
+              console.log('Erro getToken '+e.Error)
+       }}
+       return token2;
+}
+
+chamaDetalhes=( protocolo , hasMsg )=>{
+       const localToken = getToken()
+       let obj = undefined
+       try {
+              const servidor=servidorOrigem+
+                     '/v1/atacado/operacional/consultar-detalhes-notificacao/obter'
+              const msgLocal = {
+                     "client_id": msg,
+                     "client_secret": ipLocal,
+                     "grant_type": "client_credentials"
+              }
+              console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
+              
+              var res = request('POST', servidor, {
+                     headers: {
+                            "Authorization": localToken.token_type+' '+localToken.access_token
+                     },
+                     json: msgLocal
+              });
+              console.log('==>'+res.getBody())
+              obj = JSON.parse(res.getBody())
+              
+       }catch(e){
+              console.log('Erro Chamada Busca '+e.Error)
+       }
+       return obj
+}
 
 /**
  * Funcionalidade para bloqueio e desbloqueio via sistema SPAG
