@@ -863,8 +863,8 @@ getToken=()=>{
               const servidor=servidorOrigem+
                      '/auth/oauth/v2/token'
               const msgLocal = {
-                     "client_id": msg,
-                     "client_secret": ipLocal,
+                     "client_id": 'l7xx0f606c6aa7bd4b1286ebb035e5d2cda1',
+                     "client_secret": '73f7b04f554c4a9aac366830df526ffa',
                      "grant_type": "client_credentials"
               }
               console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
@@ -877,6 +877,7 @@ getToken=()=>{
               token2 = obj;
        }catch(e){
               console.log('Erro getToken '+e.Error)
+              token2=undefined
        }}
        return token2;
 }
