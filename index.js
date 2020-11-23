@@ -524,7 +524,7 @@ app.post('/auth/oauth/v1/token',
                                    // "descricaoReposta": descricaoResp,
                                    retorno = {
                                           "codigoResposta": "OK",
-                                          "descricaoReposta": {},
+                                          "descricaoReposta": descricaoResp,
                                           "identificadorBloqueioLegado": msgBloqueio,
                                           "valorEfetivado": valorEfetivo,
                                           "QtdeAtivosEfetivada": "1",
