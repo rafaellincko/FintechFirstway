@@ -448,11 +448,11 @@ app.post('/auth/oauth/v1/token',
                             let retorno=" ";
                             let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
                             try {
-                                   console.log("cnpjBaseSolicitacao")
+                                   console.log("cnpjBaseSolicitacao:"+res_data.cnpjBaseSolicitacao)
                                    if(res_data.cnpjBaseSolicitacao===""){
                                           throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
                                    }
-                                   console.log("tipoCliente")
+                                   console.log("tipoCliente:"+res_data.tipoCliente)
                                    if(res_data.tipoCliente.substring(0,1)!="F" &&
                                           res_data.tipoCliente.substring(0,1)!="J"){
                                                  throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
