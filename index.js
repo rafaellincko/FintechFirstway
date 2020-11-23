@@ -448,52 +448,66 @@ app.post('/auth/oauth/v1/token',
                             let retorno=" ";
                             let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
                             try {
+                                   console.log("cnpjBaseSolicitacao")
                                    if(res_data.cnpjBaseSolicitacao===""){
                                           throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
                                    }
+                                   console.log("tipoCliente")
                                    if(res_data.tipoCliente.substring(0,1)!="F" &&
                                           res_data.tipoCliente.substring(0,1)!="J"){
                                                  throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
                                    }
+                                   console.log("numeroAgencia")
                                    if(res_data.numeroAgencia != undefined){
                                           res_data.numeroAgencia = res_data.numeroAgencia.trim()
                                           if(res_data.numeroAgencia!=""){
                                                  throw new Error('Numero de agência nao pode ser diferente de nulo. ['+res_data.numeroAgencia+']');
                                           }
                                    } 
+                                   console.log("cpfCnpjRaizCliente...")
                                    res_data.cpfCnpjRaizCliente = res_data.cpfCnpjRaizCliente.trim()
                                    if(res_data.cpfCnpjRaizCliente==""){
                                           throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
                                    }
+                                   console.log("numeroConta")
                                    if(res_data.numeroConta==""){
                                           throw new Error('numeroConta nao pode ser nullo');
                                    }
+                                   console.log("indicadorValorTotal")
                                    if(res_data.indicadorValorTotal.substring(0,1)!="S" && 
                                           res_data.indicadorValorTotal.substring(0,1)!="N"){
                                           throw new Error('indicadorValorTotal deve ser Sim, ou Nou');
                                    }
+                                   console.log("codigoProtocolo")
                                    if(res_data.codigoProtocolo==""){
                                           throw new Error('codigoProtocolo nao pode ser nullo');
                                    }
+                                   console.log("codigoSequenciaProtocolo")
                                    if(res_data.codigoSequenciaProtocolo==""){
                                           throw new Error('codigoSequenciaProtocolo nao pode ser nullo');
                                    }
+                                   console.log("nomeInstituicao")
                                    if(res_data.nomeInstituicao==""){
                                           throw new Error('nomeInstituicao nao pode ser nullo');
                                    }
+                                   console.log("dataBloqueio")
                                    
                                    if(res_data.dataBloqueio==""){
                                           throw new Error('dataBloqueio nao pode ser nullo');
                                    }
+                                   console.log("numeroProcesso")
                                    if(res_data.numeroProcesso==""){
                                           throw new Error('numeroProcesso nao pode ser nullo');
                                    }
+                                   console.log("nomeVaraJuizo")
                                    if(res_data.nomeVaraJuizo==""){
                                           throw new Error('nomeVaraJuizo nao pode ser nullo');
                                    }
+                                   console.log("NomeAutor")
                                    if(res_data.NomeAutor==""){
                                           throw new Error('NomeAutor nao pode ser nullo');
                                    }
+                                   console.log("valorBloqueio")
                                    if(res_data.valorBloqueio<=0){
                                           throw new Error('valorBloqueio tem que ser maior que zero');
                                    }
