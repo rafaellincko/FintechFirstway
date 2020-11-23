@@ -506,9 +506,11 @@ app.post('/auth/oauth/v1/token',
                                    const descricaoResp = "Solicitação atendida"
                                    
                                    console.log(" Data "+dt)
+                                   // simulacao de erro
+                                   // "descricaoReposta": descricaoResp,
                                    retorno = {
                                           "codigoResposta": "OK",
-                                          "descricaoReposta": descricaoResp,
+                                          "descricaoReposta": {},
                                           "identificadorBloqueioLegado": msgBloqueio,
                                           "valorEfetivado": valorEfetivo,
                                           "QtdeAtivosEfetivada": "1",
