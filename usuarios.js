@@ -54,14 +54,14 @@ module.exports = [
         ]
     },
     {
-        cnpj: '01234567890123',
+        cnpj: '68838833000160',
         razaoSocial: 'Rodolpho S.A.',
         atividade: 'prestador de serviços de informática',
         dataDeAbertura: '01/01/2019',
         faturamento: 10000,
         contas: [
             {
-            numero: '11111-x',
+            numero: '62340019126',
             saldo: 12000.00
             }
         ],
