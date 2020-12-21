@@ -1,6 +1,6 @@
 module.exports = [
     {
-        cnpj: '98685966383526',
+        cnpj: '36981191881',
         razaoSocial: 'TESTE S.A.',
         atividade: 'testadores anonimos',
         dataDeAbertura: '01/01/2019',
