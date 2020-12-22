@@ -980,6 +980,7 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                    console.log(" Data:          "+res_data.dataInicio);
                                    console.log(" URLParceiro:   "+res_data.urlParceiro);
                                    console.log(" Usuario:       "+res_data.nomeParceiroServico);
+                                   console.log(" Response:     "+retorno);
                                    console.log('--------------------------------------');
                                    resp.status(200).send(retorno);
                                    console.log('--------------------------------------');
