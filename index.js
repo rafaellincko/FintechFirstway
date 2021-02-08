@@ -13,20 +13,39 @@ const app = express();
 const TOKEN = 'dGVzdGU6MTIz'; // teste 123
 var token2=undefined;
 var dateFormat = require('dateformat');
+var ultimos100logs=[];
+var maxLog=100;
+var atualLog=0;
+
 
 // app.use(express.json());
 
 var bodyParser = require('body-parser');
 const { Http2ServerRequest } = require('http2');
+const { chdir } = require('process');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
 //app.use('/validaConta', express.json());
 
-console.log('Start..');
+regLog= (texto) =>{
+       let registro = dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss")+'-'+texto;       
+       if(maxLog>=ultimos100logs.length){
+              ultimos100logs.push(registro)
+              console.log("> "+registro)
+       } else {
+              for(var i=0;i<ultimos100logs.length-1;i++){
+                     ultimos100logs[i]=ultimos100logs[i+1]
+              }
+              ultimos100logs[maxLog-1] = registro
+              console.log("- "+registro)
+       }
+};
+
+regLog('Start..');
 app.get('/usuarios', 
        (req, resp)=> {
               if(hasAuthorization(req)){
-                     console.log("/usuarios");
+                     regLog("/usuarios");
                      resp.status(200).send(usuarios);
               }else{
                      semAutorizacao(req, resp);
@@ -37,7 +56,7 @@ app.get('/usuarios',
 app.get('/usuarios/pj', 
        (req, resp)=> {
               if(hasAuthorization(req)){
-                     console.log("/usuarios/pj");
+                     regLog("/usuarios/pj");
                      resp.status(200).send(usuarios.filter(usuario => usuario.cnpj !== undefined));
               }else{
                      semAutorizacao(req, resp);
@@ -48,7 +67,7 @@ app.get('/usuarios/pj/:cnpj',
        (req, resp)=> {
               
                      if(hasAuthorization(req)){
-                            console.log('/usuarios/pj/'+req.params.cnpj);
+                            regLog('/usuarios/pj/'+req.params.cnpj);
                             let usuario;
                             for(let i=0;i<usuarios.length;i++){
                                    if(usuarios[i].cnpj==req.params.cnpj){
@@ -59,7 +78,7 @@ app.get('/usuarios/pj/:cnpj',
                             }
        
                             if(usuario == undefined || usuario == null){
-                                   console.log("Usuário não encontrado!");
+                                   regLog("Usuário não encontrado!");
                                    resp.status(500).send("Usuário não encontrado!");
                             } else {
                                    resp.status(200).send(usuario);
@@ -73,9 +92,9 @@ app.get('/usuarios/pj/:cnpj',
 
 app.get('/anexos/:documento/:id', 
        (req, resp)=> {
-              console.log('/anexos/{documento}/{id}');
+              regLog('/anexos/{documento}/{id}');
               if(hasAuthorization(req)){
-                     console.log('/anexos/'+req.params.documento+"/"+req.params.id);
+                     regLog('/anexos/'+req.params.documento+"/"+req.params.id);
                      let a;
                      for(let i=0;i<anexos.length;i++){
                             if(anexos[i].documento==req.params.documento && anexos[i].id==req.params.id){
@@ -85,10 +104,10 @@ app.get('/anexos/:documento/:id',
                             
                      }
                      if(a==undefined || a==null){
-                            console.log(".. Anexo nao encontrado...");
+                            regLog(".. Anexo nao encontrado...");
                             resp.status(500).send("Anexo nao encontrado!");
                      } else {
-                            console.log(a.id+" documento:"+a.documento+" tipo: "+a.tipo);
+                            regLog(a.id+" documento:"+a.documento+" tipo: "+a.tipo);
                             resp.status(200).send(a);
                      }
               }else{
@@ -100,7 +119,7 @@ app.get('/anexos/:documento/:id',
 app.get('/usuarios/pj/:cnpj/anexos', 
        (req, resp)=> {
               if(hasAuthorization(req)){
-                     console.log("/usuarios/pj/"+req.params.cnpj+"/anexos");
+                     regLog("/usuarios/pj/"+req.params.cnpj+"/anexos");
                      resp.status(200).send(usuarios.filter(usuario => usuario.cnpj === req.params.cnpj)[0].anexos);
               }else{
                      semAutorizacao(req, resp);
@@ -110,7 +129,7 @@ app.get('/usuarios/pj/:cnpj/anexos',
 app.get('/usuarios/pj/:cnpj/anexos/:anexo', 
        (req, resp)=> {
               if(hasAuthorization(req)){
-                     console.log("/usuarios/pj/"+req.params.cnpj+"/anexos/"+req.params.anexo);
+                     regLog("/usuarios/pj/"+req.params.cnpj+"/anexos/"+req.params.anexo);
                      resp.status(200).send(
                             usuarios.filter(usuario => usuario.cnpj === req.params.cnpj)[0]
                             .anexos.filter(anexo => anexo.nome === req.params.anexo));
@@ -121,7 +140,7 @@ app.get('/usuarios/pj/:cnpj/anexos/:anexo',
 
 app.post('/login', 
        (req, resp)=> {
-              console.log("/login "+req.body.username+"("+req.body.password+")");
+              regLog("/login "+req.body.username+"("+req.body.password+")");
               if(req.body.username === 'teste' && req.body.password === '123'){
                      resp.status(200).send({token: TOKEN});
               }else {
@@ -138,7 +157,7 @@ semAutorizacao =
               }
 
               const msg = auth+" invalida! ["+req.headers[auth]+"]";
-              console.log(msg);
+              regLog(msg);
               resp.status(401).send(msg);
        }
 
@@ -146,48 +165,48 @@ hasAuthorization =
        (req) =>{
               let auth = 'Authorization';
               
-              console.log(req.headers);
+              regLog(req.headers);
               if(req.headers[auth] === undefined){
                      auth = auth.toLowerCase();
               }
               if(req.headers[auth] === 'Basic '+ TOKEN ) {
-                     console.log("[Basic "+ TOKEN+"]");
+                     regLog("[Basic "+ TOKEN+"]");
                      return true;
               }
               if(req.headers[auth] === jtoken.token_type+" "+jtoken.access_token){
-                     console.log(" ["+jtoken.token_type+" "+jtoken.access_token);
+                     regLog(" ["+jtoken.token_type+" "+jtoken.access_token);
                      return true;
                  
               }
               const keyToken = jtoken.token_type+" "+jtoken.access_token;
               try {
-                     console.log(' KeyToken '+keyToken);
-                     console.log(' Header '+req.headers[auth].substring(0,31));
+                     regLog(' KeyToken '+keyToken);
+                     regLog(' Header '+req.headers[auth].substring(0,31));
                      if(req.headers[auth].substring(0,31) === keyToken.substring(0,31)){
-                            console.log(" Validando periodo!");
+                            regLog(" Validando periodo!");
                             const strData = req.headers[auth].substring(31,41);
-                            console.log("Cabec "+req.headers[auth]);
-                            console.log("Cabec "+req.headers[auth].substring(0,31));
+                            regLog("Cabec "+req.headers[auth]);
+                            regLog("Cabec "+req.headers[auth].substring(0,31));
                             const now = new Date();
                             const ano = "20"+strData.substring(0,2);
                             const mes = strData.substring(2,4);
                             const dia = strData.substring(4,6);
                             const hora = strData.substring(6,8);
                             const minuto = strData.substring(8,10);
-                            console.log(" StrData "+ano+"-"+mes+"-"+
+                            regLog(" StrData "+ano+"-"+mes+"-"+
                                           dia+" "+
                                           hora+":"+
                                           minuto+" "); 
 
                             let dt = new Date(ano+"-"+mes+"-"+dia+" "+hora+":"+minuto+":00");
-                            console.log(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
+                            regLog(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
                             dt.setSeconds(dt.getSeconds()+3600);     
-                            console.log(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
+                            regLog(dateFormat(dt, "dd/mm/yyyy HH:MM"));       
                             return now<=dt;
                      
                      }
               }catch(e){
-                     console.log(e);
+                     regLog(e);
                      return false;
               }
 
@@ -195,27 +214,27 @@ hasAuthorization =
 
 app.post('/auth/oauth/v1/token', 
        (req, resp)=> {
-              console.log("/auth/oauth/v1/token ");
+              regLog("/auth/oauth/v1/token ");
               console.dir(req.body);
-              console.log("--------------------------");
+              regLog("--------------------------");
               if(req.body.client_id==='resource.jalmeida' &&
                      req.body.client_secret==='teste' &&
                      req.body.grant_type==='client_credentials'){
-                     console.log("Ok! "+req.body.client_id);
+                     regLog("Ok! "+req.body.client_id);
                      let ktoken = jtoken;
                      const now = new Date();
-                     console.log(" Date "+dateFormat(now, "yymmddHHMM"))
+                     regLog(" Date "+dateFormat(now, "yymmddHHMM"))
 
                      ktoken.access_token = jtoken.access_token.substring(0,24)+dateFormat(now, "yymmddHHMM")+"bd";
                      console.dir(jtoken);
-                     console.log("============");
+                     regLog("============");
                      console.dir(ktoken);
                      resp.status(200).send(jtoken);
               } else {
-                     console.log("NOk!");
+                     regLog("NOk!");
                      resp.status(401).send('Usuário ou senha invalidos');
               }
-              console.log("--------------------------");
+              regLog("--------------------------");
        }
        );
 
@@ -224,9 +243,9 @@ app.post('/auth/oauth/v1/token',
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
-                            console.log("Result ");
-                            console.log(req.body);
-                            console.log("--------------------------");
+                            regLog("Result ");
+                            regLog(req.body);
+                            regLog("--------------------------");
                             const res_data = req.body;
                             /*
                             let retorno = '{ "numeroProtocolo": "'+res_data.numeroProtocolo+
@@ -247,7 +266,7 @@ app.post('/auth/oauth/v1/token',
                                           throw  new Error('É obrigatorio informar o tipo do movimento');
                                    } else {
                                           if(res_data.codigoTipoMovimento===1 || res_data.codigoTipoMovimento===2){
-                                                 console.log('codigoTipoMovimento ok! ');
+                                                 regLog('codigoTipoMovimento ok! ');
                                           } else {
                                                  throw new Error('O codigoTipoMovimento deve ser 1 - Inclusao ou 2 - alteracao '+res_data.codigoTipoMovimento);
 
@@ -257,30 +276,30 @@ app.post('/auth/oauth/v1/token',
                                           throw new Error('numeroConta Invalido!');
                                    }
                                    retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "'+res_data.protocolo+'XPTO" } ';
-                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                                   console.log(" Data Inicio: "+res_data.dataInicio);
-                                   console.log(" Protocolo: "+res_data.protocolo);
+                                   regLog(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   regLog(" Data Inicio: "+res_data.dataInicio);
+                                   regLog(" Protocolo: "+res_data.protocolo);
 
                                    let pessoas = res_data.listaUsuario.usuario;
                                    for(let i=0;i<pessoas.length;i++){
-                                          console.log("-----------------------------------------")
-                                          console.log("      Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
-                                          console.log("      tipoPessoa:"+pessoas[i].tipoPessoa);
-                                          console.log("      codigoTipoVinculo:"+pessoas[i].codigoTipoVinculo);
+                                          regLog("-----------------------------------------")
+                                          regLog("      Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
+                                          regLog("      tipoPessoa:"+pessoas[i].tipoPessoa);
+                                          regLog("      codigoTipoVinculo:"+pessoas[i].codigoTipoVinculo);
                                    }
-                                   console.log("-----------------------------------------");
-                                   console.log("Retorno");
-                                   console.log("---------------------------------------");
-                                   console.log(retorno);
-                                   console.log("---------------------------------------");
+                                   regLog("-----------------------------------------");
+                                   regLog("Retorno");
+                                   regLog("---------------------------------------");
+                                   regLog(retorno);
+                                   regLog("---------------------------------------");
                                    
                                    resp.status(200).send(retorno);
 
                             }catch( e){
-                                   console.log("--------------------------------------");
-                                   console.log(" Erro ");
-                                   console.log(e);
-                                   console.log("--------------------------------------------");
+                                   regLog("--------------------------------------");
+                                   regLog(" Erro ");
+                                   regLog(e);
+                                   regLog("--------------------------------------------");
                                    retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "'+e+'" } ';
                                    resp.status(200).send(retorno);
                             }
@@ -297,9 +316,9 @@ app.post('/auth/oauth/v1/token',
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
-                            console.log("Result ");
-                            console.log(req.body);
-                            console.log("--------------------------");
+                            regLog("Result ");
+                            regLog(req.body);
+                            regLog("--------------------------");
                             const res_data = req.body;
                             /*
                             let retorno = '{ "numeroProtocolo": "'+res_data.numeroProtocolo+
@@ -340,13 +359,13 @@ app.post('/auth/oauth/v1/token',
                                           throw new Error('E obrigatorio informar o numero da conta ');            
                                    }
                                    retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "Blocked/Unblocked" } ';
-                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                                   console.log(" Status: "+res_data.codigoStatusRelacionamentoConta);
-                                   console.log(" Motivo: "+res_data.descricaoMotivoBloqueio);
-                                   console.log(" Data: "+res_data.dataInicio);
-                                   console.log('--------------------------------------');
+                                   regLog(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   regLog(" Status: "+res_data.codigoStatusRelacionamentoConta);
+                                   regLog(" Motivo: "+res_data.descricaoMotivoBloqueio);
+                                   regLog(" Data: "+res_data.dataInicio);
+                                   regLog('--------------------------------------');
                                    resp.status(200).send(retorno);
-                                   console.log('--------------------------------------');
+                                   regLog('--------------------------------------');
                                    
                             }catch( e){
                                    retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "Erro: '+e+'" } ';
@@ -365,9 +384,9 @@ app.post('/auth/oauth/v1/token',
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
-                            console.log("Result ");
-                            console.log(req.body);
-                            console.log("--------------------------");
+                            regLog("Result ");
+                            regLog(req.body);
+                            regLog("--------------------------");
                             const res_data = req.body;
 
                             let retorno=" ";
@@ -406,21 +425,21 @@ app.post('/auth/oauth/v1/token',
                                    try {
                                           let pessoas = res_data.listaUsuario.usuario;
                                           for(let i=0;i<pessoas.length;i++){
-                                                 console.log(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
+                                                 regLog(" Pessoa/Documento: "+pessoas[i].nome+" / "+pessoas[i].numeroDocumento);
                                           }
        
                                    } catch(e){
                                           throw new Error('Erro na leitura de pessoas '+e);
                                    }
-                                   console.log('--------------------------------------');
+                                   regLog('--------------------------------------');
                                    retorno = '{ "statusCadastro": "OK", "descricaoMensagemRetorno": "" } ';
-                                   console.log('--------------------------------------');
+                                   regLog('--------------------------------------');
                                    
                                    resp.status(200).send(retorno);
                             }catch( e){
-                                   console.log('--------------------------------------');
+                                   regLog('--------------------------------------');
                                    retorno = '{ "statusCadastro": "NOK", "descricaoMensagemRetorno": "Erro: '+e+'" } ';
-                                   console.log('--------------------------------------');
+                                   regLog('--------------------------------------');
                                    resp.status(200).send(retorno);
                             }
                             
@@ -441,73 +460,73 @@ app.post('/auth/oauth/v1/token',
               (req, resp)=> {
              
                      if(hasAuthorization(req)){
-                            console.log("- bloquearSolicitacaoJudicial -------------------------");
-                            console.log(req.body);
-                            console.log("------------------------------")
+                            regLog("- bloquearSolicitacaoJudicial -------------------------");
+                            regLog(req.body);
+                            regLog("------------------------------")
                             const res_data = req.body;
                             let retorno=" ";
                             let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
                             try {
-                                   console.log("cnpjBaseSolicitacao:"+res_data.cnpjBaseSolicitacao)
+                                   regLog("cnpjBaseSolicitacao:"+res_data.cnpjBaseSolicitacao)
                                    if(res_data.cnpjBaseSolicitacao===""){
                                           throw new Error(" cnpjBaseSolicitacao nao pode ser nula ")
                                    }
-                                   console.log("tipoCliente:"+res_data.tipoCliente)
+                                   regLog("tipoCliente:"+res_data.tipoCliente)
                                    if(res_data.tipoCliente.substring(0,1)!="F" &&
                                           res_data.tipoCliente.substring(0,1)!="J"){
                                                  throw new Error('Tipo Cliente nao pode ser diferente de Fisica ou Jurica');
                                    }
-                                   console.log("numeroAgencia")
+                                   regLog("numeroAgencia")
                                    if(res_data.numeroAgencia != undefined){
                                           res_data.numeroAgencia = res_data.numeroAgencia.trim()
                                           if(res_data.numeroAgencia!=""){
                                                  throw new Error('Numero de agência nao pode ser diferente de nulo. ['+res_data.numeroAgencia+']');
                                           }
                                    } 
-                                   console.log("cpfCnpjRaizCliente...")
+                                   regLog("cpfCnpjRaizCliente...")
                                    res_data.cpfCnpjRaizCliente = res_data.cpfCnpjRaizCliente.trim()
                                    if(res_data.cpfCnpjRaizCliente==""){
                                           throw new Error('cpfCnpjRaizCliente nao pode ser nullo');
                                    }
-                                   console.log("numeroConta")
+                                   regLog("numeroConta")
                                    if(res_data.numeroConta==""){
                                           throw new Error('numeroConta nao pode ser nullo');
                                    }
-                                   console.log("indicadorValorTotal")
+                                   regLog("indicadorValorTotal")
                                    if(res_data.indicadorValorTotal.substring(0,1)!="S" && 
                                           res_data.indicadorValorTotal.substring(0,1)!="N"){
                                           throw new Error('indicadorValorTotal deve ser Sim, ou Nou');
                                    }
-                                   console.log("codigoProtocolo")
+                                   regLog("codigoProtocolo")
                                    if(res_data.codigoProtocolo==""){
                                           throw new Error('codigoProtocolo nao pode ser nullo');
                                    }
-                                   console.log("codigoSequenciaProtocolo")
+                                   regLog("codigoSequenciaProtocolo")
                                    if(res_data.codigoSequenciaProtocolo==""){
                                           throw new Error('codigoSequenciaProtocolo nao pode ser nullo');
                                    }
-                                   console.log("nomeInstituicao")
+                                   regLog("nomeInstituicao")
                                    if(res_data.nomeInstituicao==""){
                                           throw new Error('nomeInstituicao nao pode ser nullo');
                                    }
-                                   console.log("dataBloqueio")
+                                   regLog("dataBloqueio")
                                    
                                    if(res_data.dataBloqueio==""){
                                           throw new Error('dataBloqueio nao pode ser nullo');
                                    }
-                                   console.log("numeroProcesso")
+                                   regLog("numeroProcesso")
                                    if(res_data.numeroProcesso==""){
                                           throw new Error('numeroProcesso nao pode ser nullo');
                                    }
-                                   console.log("nomeVaraJuizo")
+                                   regLog("nomeVaraJuizo")
                                    if(res_data.nomeVaraJuizo==""){
                                           throw new Error('nomeVaraJuizo nao pode ser nullo');
                                    }
-                                   console.log("NomeAutor")
+                                   regLog("NomeAutor")
                                    if(res_data.NomeAutor==""){
                                           throw new Error('NomeAutor nao pode ser nullo');
                                    }
-                                   console.log("valorBloqueio")
+                                   regLog("valorBloqueio")
                                    if(res_data.valorBloqueio<=0){
                                           throw new Error('valorBloqueio tem que ser maior que zero');
                                    }
@@ -519,7 +538,7 @@ app.post('/auth/oauth/v1/token',
                                    const msgBloqueio = "Resp:"+res_data.codigoProtocolo+"-"+res_data.codigoSequenciaProtocolo
                                    const descricaoResp = "Solicitação atendida"
                                    
-                                   console.log(" Data "+dt)
+                                   regLog(" Data "+dt)
                                    // simulacao de erro
                                    // "descricaoReposta": descricaoResp,
                                    retorno = {
@@ -545,10 +564,10 @@ app.post('/auth/oauth/v1/token',
                                    }
 
                             }
-                     console.log('--------------------------------------');
-                     console.log(JSON.stringify(retorno))
+                     regLog('--------------------------------------');
+                     regLog(JSON.stringify(retorno))
                      resp.status(200).send(retorno);
-                     console.log('--------------------------------------');
+                     regLog('--------------------------------------');
              }else{
                     semAutorizacao(req, resp);
              }
@@ -558,9 +577,9 @@ app.post('/auth/oauth/v1/token',
        (req, resp)=> {
       
               if(hasAuthorization(req)){
-                     console.log("- desbloquearIntraday -------------------------");
-                     console.log(req.body);
-                     console.log("------------------------------")
+                     regLog("- desbloquearIntraday -------------------------");
+                     regLog(req.body);
+                     regLog("------------------------------")
                      const res_data = req.body;
                      let retorno=" ";
                      let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
@@ -610,7 +629,7 @@ app.post('/auth/oauth/v1/token',
                                    throw new Error('valorBloqueio tem que ser maior que zero');
                             }
 
-                     console.log(" Data "+dt)
+                     regLog(" Data "+dt)
                             retorno = {
                                    "codigoResposta": "OK",
                                    "descricaoReposta": "Solicitação atendida",
@@ -628,10 +647,10 @@ app.post('/auth/oauth/v1/token',
                             }
 
                      }
-              console.log('--------------------------------------');
-              console.log(JSON.stringify(retorno))
+              regLog('--------------------------------------');
+              regLog(JSON.stringify(retorno))
               resp.status(200).send(retorno);
-              console.log('--------------------------------------');
+              regLog('--------------------------------------');
       }else{
              semAutorizacao(req, resp);
       }
@@ -641,10 +660,10 @@ app.post('/consultaSaldoBloqueado',
        (req, resp) => {
 
               if(hasAuthorization(req)){
-                     console.log("- consultaSaldoBloqueado -------------------------");
+                     regLog("- consultaSaldoBloqueado -------------------------");
                      const res_data = req.body;
                      let retorno=" ";
-                     console.log("------------------------")
+                     regLog("------------------------")
                      let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
                      try {
        
@@ -687,7 +706,7 @@ app.post('/consultaSaldoBloqueado',
                                    arrayBloqueios.push(itemBloqueio)
                             }
                             
-                            console.log(" Data "+dt)
+                            regLog(" Data "+dt)
                             retorno = {
                                    "Contas": arrayContas,
                                    "Bloqueios":arrayBloqueios
@@ -696,7 +715,7 @@ app.post('/consultaSaldoBloqueado',
        
                      }catch( e){
                             const vet = []
-                            console.log("Erro "+e)
+                            regLog("Erro "+e)
                             retorno = {
                                    "Contas": vet,
                                    "Bloqueios": vet,
@@ -704,10 +723,10 @@ app.post('/consultaSaldoBloqueado',
                             }
        
                      }
-              console.log('--------------------------------------');
-              console.log(JSON.stringify(retorno))
+              regLog('--------------------------------------');
+              regLog(JSON.stringify(retorno))
               resp.status(200).send(retorno);
-              console.log('--------------------------------------');
+              regLog('--------------------------------------');
        }else{
              semAutorizacao(req, resp);
        }
@@ -718,7 +737,7 @@ app.post('/desbloquearSolicitacaoJudicial',
 (req, resp)=> {
 
        if(hasAuthorization(req)){
-              console.log("- desbloquearSolicitacaoJudicial -------------------------");
+              regLog("- desbloquearSolicitacaoJudicial -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
@@ -763,7 +782,7 @@ app.post('/desbloquearSolicitacaoJudicial',
                      }
 
        
-                     console.log(" Data "+dt)
+                     regLog(" Data "+dt)
                      retorno = {
                             "codigoResposta": "OK",
                             "descricaoReposta": "Desbloqueio atendido",
@@ -782,10 +801,10 @@ app.post('/desbloquearSolicitacaoJudicial',
                      }
 
               }
-       console.log('--------------------------------------');
-       console.log(JSON.stringify(retorno))
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
        resp.status(200).send(retorno);
-       console.log('--------------------------------------');
+       regLog('--------------------------------------');
 }else{
       semAutorizacao(req, resp);
 }
@@ -795,13 +814,13 @@ app.post('/notificar',
 (req, resp)=> {
 
        if(hasAuthorization(req)){
-              console.log("- notificar -------------------------");
+              regLog("- notificar -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
               try {
-                     console.log(" Data "+dt)
-                     console.log(JSON.stringify(res_data))
+                     regLog(" Data "+dt)
+                     regLog(JSON.stringify(res_data))
                      retorno = {
                             "codigoRetorno": 200,
                             "descricaoMensagemRetorno": "OK"
@@ -815,10 +834,10 @@ app.post('/notificar',
                      }
 
               }
-       console.log('--------------------------------------');
-       console.log(JSON.stringify(retorno))
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
        resp.status(200).send(retorno);
-       console.log('--------------------------------------');
+       regLog('--------------------------------------');
 }else{
       semAutorizacao(req, resp);
 }
@@ -826,7 +845,7 @@ app.post('/notificar',
 
 chamarDetalhes=( protocolo , hasMsg )=>{
        const localToken = getToken()
-       console.log("::Prot:"+protocolo+" hash"+hasMsg)
+       regLog("::Prot:"+protocolo+" hash"+hasMsg)
        let obj = undefined
        try {
               const servidor=servidorOrigem+
@@ -837,7 +856,7 @@ chamarDetalhes=( protocolo , hasMsg )=>{
                      "hashMensagem": hasMsg,
                      "protocolo": protocolo
               }
-              console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
+              regLog("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
               
               var res = request('POST', servidor, {
                      headers: {
@@ -845,11 +864,11 @@ chamarDetalhes=( protocolo , hasMsg )=>{
                      },
                      json: msgLocal
               });
-              console.log('==>'+res.getBody())
+              regLog('==>'+res.getBody())
               obj = JSON.parse(res.getBody())
               
        }catch(e){
-              console.log('Erro Chamada Busca '+e.Error)
+              regLog('Erro Chamada Busca '+e.Error)
        }
        return obj
 }
@@ -858,14 +877,14 @@ app.post('/v2/notificar',
 (req, resp)=> {
 
        if(hasAuthorization(req)){
-              console.log("- notificar -------------------------");
-              console.log(JSON.stringify(req.body))
+              regLog("- notificar -------------------------");
+              regLog(JSON.stringify(req.body))
               const res_data = req.body
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
               try {
-                     console.log(" Data "+dt)
-                     console.log(JSON.stringify(res_data))
+                     regLog(" Data "+dt)
+                     regLog(JSON.stringify(res_data))
                      retorno = {
                             "codigoRetorno": 200,
                             "descricaoMensagemRetorno": "OK"
@@ -879,16 +898,16 @@ app.post('/v2/notificar',
                      }
 
               }
-              console.log("1")
+              regLog("1")
               try {
-                     console.log("2")
+                     regLog("2")
                      let resChamada=undefined
-                     console.log('='+res_data.evento+'-'+res_data.protocolo+"="+res_data.hashMensagem)
+                     regLog('='+res_data.evento+'-'+res_data.protocolo+"="+res_data.hashMensagem)
                      //if(res_data.evento==='1'){
-                            console.log("Evento 1")
+                            regLog("Evento 1")
                             resChamada= chamarDetalhes(res_data.protocolo, 
                                                         res_data.hashMensagem)
-                            console.log('Retorno chamada!'+JSON.stringify(resChamada))
+                            regLog('Retorno chamada!'+JSON.stringify(resChamada))
                      //} else {
                      //       log.console("Evento "+res_data.evento+" sem chamada!")
                      //}
@@ -899,10 +918,10 @@ app.post('/v2/notificar',
                      }
 
               }
-       console.log('--------------------------------------');
-       console.log(JSON.stringify(retorno))
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
        resp.status(200).send(retorno);
-       console.log('--------------------------------------');
+       regLog('--------------------------------------');
 }else{
       semAutorizacao(req, resp);
 }
@@ -918,16 +937,16 @@ getToken=()=>{
                      "client_secret": '73f7b04f554c4a9aac366830df526ffa',
                      "grant_type": "client_credentials"
               }
-              console.log("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
+              regLog("Token:"+servidor+ " Body:"+JSON.stringify(msgLocal))
               
               var res = request('POST', servidor, {
                      json: msgLocal,
               });
-              console.log('==>'+res.getBody())
+              regLog('==>'+res.getBody())
               let obj = JSON.parse(res.getBody())
               token2 = obj;
        }catch(e){
-              console.log('Erro getToken '+e.Error)
+              regLog('Erro getToken '+e.Error)
               token2=undefined
        }}
        return token2;
@@ -941,9 +960,9 @@ app.post('/bloquearDesbloquearContaViaSpag',
               (req, resp)=> {
                      
                      if(hasAuthorization(req)){
-                            console.log("Result ");
-                            console.log(req.body);
-                            console.log("--------------------------");
+                            regLog("Result ");
+                            regLog(req.body);
+                            regLog("--------------------------");
                             const res_data = req.body;
 
                            let retorno=" ";
@@ -974,15 +993,15 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                  
                                    const numRandom = require('crypto').createHash('md5').update(Math.random().toString()).digest('hex');
                                    retorno = '{ "numeroProtocoloConfirmacaoBloqueioDesbloqueio": "'+numRandom+'", "confirmacaoDePedidoBloqueioDesbloqueio": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
-                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                                   console.log(" Status:        "+res_data.codigoStatusRelacionamentoConta);
-                                   console.log(" Motivo:        "+res_data.descricaoMotivoBloqueioDesbloqueio);
-                                   console.log(" Data:          "+res_data.dataInicio);
-                                   console.log(" URLParceiro:   "+res_data.urlParceiro);
-                                   console.log(" Usuario:       "+res_data.nomeParceiroServico);
-                                   console.log('--------------------------------------');
+                                   regLog(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   regLog(" Status:        "+res_data.codigoStatusRelacionamentoConta);
+                                   regLog(" Motivo:        "+res_data.descricaoMotivoBloqueioDesbloqueio);
+                                   regLog(" Data:          "+res_data.dataInicio);
+                                   regLog(" URLParceiro:   "+res_data.urlParceiro);
+                                   regLog(" Usuario:       "+res_data.nomeParceiroServico);
+                                   regLog('--------------------------------------');
                                    resp.status(200).send(retorno);
-                                   console.log('--------------------------------------');
+                                   regLog('--------------------------------------');
                                    
                             }catch( e){
                                    retorno = '{ "numeroProtocoloConfirmacaoBloqueioDesbloqueio": "NOK", "confirmacaoDePedidoBloqueioDesbloqueio": "NOK","descricaoMensagemRetorno": "Erro: '+e+'" } ';                     
@@ -999,7 +1018,7 @@ app.post('/solicitarTransferenciaJudicial',
 (req, resp)=> {
 
        if(hasAuthorization(req)){
-              console.log("- solicitarTransferenciaJudicial -------------------------");
+              regLog("- solicitarTransferenciaJudicial -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
@@ -1062,7 +1081,7 @@ app.post('/solicitarTransferenciaJudicial',
 
 
        
-                     console.log(" Data "+dt)
+                     regLog(" Data "+dt)
                      retorno = {
                             "codigoResposta": "OK",
                             "descricaoReposta": "Transferencia aceita",
@@ -1081,10 +1100,10 @@ app.post('/solicitarTransferenciaJudicial',
                      }
 
               }
-       console.log('--------------------------------------');
-       console.log(JSON.stringify(retorno))
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
        resp.status(200).send(retorno);
-       console.log('--------------------------------------');
+       regLog('--------------------------------------');
 }else{
       semAutorizacao(req, resp);
 }
@@ -1092,5 +1111,37 @@ app.post('/solicitarTransferenciaJudicial',
 
 
 app.listen(port, ()=>{
-       console.log("Listem "+port)
+       regLog("Listem "+port)
 });
+
+app.get('/logs', 
+(req, resp)=> {
+       /*
+       if(hasAuthorization(req)){
+              regLog("/usuarios");
+              resp.status(200).send(usuarios);
+       }else{
+              semAutorizacao(req, resp);
+       }
+       */
+      var texto="<!DOCTYPE html>"
+      texto+='<title>Logs</title>'
+      texto+='      <meta charset="UTF-8">'
+      texto+='<meta name="viewport" content="width=device-width, initial-scale=1">'
+      texto+='<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">'
+      texto+='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">'
+      texto+='<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+      texto+='<style>'
+      texto+='.body {font-family: "Lato", sans-serif}'
+      texto+='.mySlides {display: none}'
+      texto+='</style> <Body>'
+      texto += '  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">'
+      texto += '<h2 class="w3-wide">LOG</h2>'
+
+      for(var i = ultimos100logs.length-1;i>=0;i--){
+              texto += '<p class="w3-justify">'+ultimos100logs[i]+'</p>'
+      }
+      texto += '</body>  </html>';
+      resp.status(200).send(texto);
+}
+);
