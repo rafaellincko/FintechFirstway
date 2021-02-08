@@ -31,13 +31,13 @@ regLog= (texto) =>{
        let registro = dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss")+'-'+texto;       
        if(maxLog>=ultimos100logs.length){
               ultimos100logs.push(registro)
-              console.log("> "+registro)
+              //console.log("> "+registro)
        } else {
               for(var i=0;i<ultimos100logs.length-1;i++){
                      ultimos100logs[i]=ultimos100logs[i+1]
               }
               ultimos100logs[maxLog-1] = registro
-              console.log("- "+registro)
+              //console.log("- "+registro)
        }
 };
 
