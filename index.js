@@ -28,10 +28,6 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
 //app.use('/validaConta', express.json());
 
-isObject = function(a) {
-       return (!!a) && (type( a ) === '[object Object]' );
-   };
-
 regLog= (texto) =>{
        var texto2=''
        if(true){
