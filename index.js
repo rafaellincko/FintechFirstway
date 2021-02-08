@@ -14,7 +14,7 @@ const TOKEN = 'dGVzdGU6MTIz'; // teste 123
 var token2=undefined;
 var dateFormat = require('dateformat');
 var ultimos100logs=[];
-var maxLog=100;
+var maxLog=1000;
 var atualLog=0;
 
 
@@ -993,24 +993,14 @@ app.post('/bloquearDesbloquearContaViaSpag',
                                  
                                    const numRandom = require('crypto').createHash('md5').update(Math.random().toString()).digest('hex');
                                    retorno = '{ "numeroProtocoloConfirmacaoBloqueioDesbloqueio": "'+numRandom+'", "confirmacaoDePedidoBloqueioDesbloqueio": "OK","descricaoMensagemRetorno": "Blocked/Unblocked" } ';                                   
-<<<<<<< HEAD
-                                   regLog(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                                   regLog(" Status:        "+res_data.codigoStatusRelacionamentoConta);
-                                   regLog(" Motivo:        "+res_data.descricaoMotivoBloqueioDesbloqueio);
-                                   regLog(" Data:          "+res_data.dataInicio);
-                                   regLog(" URLParceiro:   "+res_data.urlParceiro);
-                                   regLog(" Usuario:       "+res_data.nomeParceiroServico);
-                                   regLog('--------------------------------------');
-=======
-                                   console.log(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
-                                   console.log(" Status:        "+res_data.codigoStatusRelacionamentoConta);
-                                   console.log(" Motivo:        "+res_data.descricaoMotivoBloqueioDesbloqueio);
-                                   console.log(" Data:          "+res_data.dataInicio);
-                                   console.log(" URLParceiro:   "+res_data.urlParceiro);
-                                   console.log(" Usuario:       "+res_data.nomeParceiroServico);
-                                   console.log(" Response:     "+retorno);
-                                   console.log('--------------------------------------');
->>>>>>> c8090ed2a7b6d5daccc2d6daa2cefdbe009651d2
+                                   reglog(" Agencia/Conta: "+res_data.numeroAgencia+" / "+res_data.numeroConta);
+                                   reglog(" Status:        "+res_data.codigoStatusRelacionamentoConta);
+                                   reglog(" Motivo:        "+res_data.descricaoMotivoBloqueioDesbloqueio);
+                                   reglog(" Data:          "+res_data.dataInicio);
+                                   reglog(" URLParceiro:   "+res_data.urlParceiro);
+                                   reglog(" Usuario:       "+res_data.nomeParceiroServico);
+                                   reglog(" Response:     "+retorno);
+                                   reglog('--------------------------------------');
                                    resp.status(200).send(retorno);
                                    regLog('--------------------------------------');
                                    
@@ -1125,7 +1115,7 @@ app.listen(port, ()=>{
        regLog("Listem "+port)
 });
 
-app.get('/logs', 
+app.get('/visualizaLogs', 
 (req, resp)=> {
        /*
        if(hasAuthorization(req)){
