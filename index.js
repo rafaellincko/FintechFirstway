@@ -34,7 +34,7 @@ isObject = function(a) {
 
 regLog= (texto) =>{
        var texto2=''
-       if(isObject(texto)){
+       if(true){
               texto2 =JSON.stringify(texto)
        } else {
               texto2 = texto
