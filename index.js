@@ -23,12 +23,23 @@ var atualLog=0;
 var bodyParser = require('body-parser');
 const { Http2ServerRequest } = require('http2');
 const { chdir } = require('process');
+const { isObject } = require('util');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
 //app.use('/validaConta', express.json());
 
+isObject = function(a) {
+       return (!!a) && (type( a ) === '[object Object]' );
+   };
+
 regLog= (texto) =>{
-       let registro = dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss")+'-'+texto;       
+       var texto2=''
+       if(isObject(texto)){
+              texto2 =JSON.stringify(texto)
+       } else {
+              texto2 = texto
+       }
+       let registro = dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss")+'-'+texto2;       
        if(maxLog>=ultimos100logs.length){
               ultimos100logs.push(registro)
               //console.log("> "+registro)
