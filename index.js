@@ -867,6 +867,8 @@ app.get('/confirmarOperacao',
 
              
               }catch( e){
+              	regLog(e);
+              	
                      retorno = {
                             "retornoConfirmacao": 1
                      }
