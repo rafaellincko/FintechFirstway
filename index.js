@@ -855,12 +855,12 @@ app.get('/confirmarOperacao',
 
        if(hasAuthorization(req)){
               regLog("- confirmarOperacao -------------------------");
-              // const res_data = req.body;
+              const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
               try {
                      regLog(" Data "+dt)
-                     regLog(JSON.stringify(req))
+                     regLog(JSON.stringify(res_data))
                      retorno = {
                             "retornoConfirmacao": 0
                      }
