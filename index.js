@@ -850,6 +850,39 @@ app.post('/notificar',
 }
 });
 
+app.get('/confirmarOperacao', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              regLog("- confirmarOperacao -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+                     regLog(" Data "+dt)
+                     regLog(JSON.stringify(res_data))
+                     retorno = {
+                            "retornoConfirmacao": 0
+                     }
+
+             
+              }catch( e){
+                     retorno = {
+                            "retornoConfirmacao": 1
+                     }
+
+              }
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       regLog('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
+
+
+
 chamarDetalhes=( protocolo , hasMsg )=>{
        const localToken = getToken()
        regLog("::Prot:"+protocolo+" hash"+hasMsg)
