@@ -1,4 +1,5 @@
 const usuarios = require('./usuarios.js');
+const usuariospf = require('./usuariospf.js');
 const anexos = require('./anexos.js');
 const jtoken = require('./token.js');
 const request = require('sync-request');
@@ -89,6 +90,33 @@ app.get('/usuarios/pj/:cnpj',
                                    resp.status(500).send("Usuário não encontrado!");
                             } else {
                                    resp.status(200).send(usuario);
+                            }
+              
+                     }else{
+                            semAutorizacao(req, resp);
+                     }
+
+       });
+
+app.get('/usuarios/pf/:cpf', 
+       (req, resp)=> {
+              
+                     if(hasAuthorization(req)){
+                            regLog('/usuarios/pf/'+req.params.cpf);
+                            let usuariopf;
+                            for(let i=0;i<usuariospf.length;i++){
+                                   if(usuariospf[i].cpf==req.params.cpf){
+                                          usuariopf = usuariospf[i];
+                                          break;
+                                   }
+                                   
+                            }
+       
+                            if(usuariopf == undefined || usuariopf == null){
+                                   regLog("Usuário não encontrado!");
+                                   resp.status(500).send("Usuário não encontrado!");
+                            } else {
+                                   resp.status(200).send(usuariopf);
                             }
               
                      }else{
