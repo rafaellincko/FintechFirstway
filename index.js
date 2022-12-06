@@ -912,7 +912,7 @@ app.get('/confirmarOperacao',
 }
 });
 
-app.get('/confirmarOperacaoTributo', 
+app.post('/confirmarOperacaoTributo', 
 (req, resp)=> {
 
        if(hasAuthorization(req)){
