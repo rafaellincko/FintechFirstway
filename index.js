@@ -912,6 +912,40 @@ app.get('/confirmarOperacao',
 }
 });
 
+app.get('/confirmarOperacaoTributo', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              regLog("- Params ("+JSON.stringify(req.params)+")");
+              regLog("- confirmarOperacaoTributo -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+                     regLog(" Data "+dt)
+                     regLog(JSON.stringify(res_data))
+                     retorno = {
+                            "retornoConfirmacao": 0
+                     }
+
+             
+              }catch( e){
+              	regLog(e);
+              	
+                     retorno = {
+                            "retornoConfirmacao": 1
+                     }
+
+              }
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       regLog('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
+
 app.get('/rejeitarOperacao', 
 (req, resp)=> {
 
