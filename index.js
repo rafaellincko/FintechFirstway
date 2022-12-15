@@ -883,7 +883,41 @@ app.get('/confirmarOperacao',
 
        if(hasAuthorization(req)){
               regLog("- Params ("+JSON.stringify(req.params)+")");
-              regLog("- confirmarOperacao -------------------------");
+              regLog("- confirmarOperacao get -------------------------");
+              const res_data = req.body;
+              let retorno=" ";
+              let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
+              try {
+                     regLog(" Data "+dt)
+                     regLog(JSON.stringify(res_data))
+                     retorno = {
+                            "retornoConfirmacao": 0
+                     }
+
+             
+              }catch( e){
+              	regLog(e);
+              	
+                     retorno = {
+                            "retornoConfirmacao": 1
+                     }
+
+              }
+       regLog('--------------------------------------');
+       regLog(JSON.stringify(retorno))
+       resp.status(200).send(retorno);
+       regLog('--------------------------------------');
+}else{
+      semAutorizacao(req, resp);
+}
+});
+
+app.post('/confirmarOperacao', 
+(req, resp)=> {
+
+       if(hasAuthorization(req)){
+              regLog("- Params ("+JSON.stringify(req.params)+")");
+              regLog("- confirmarOperacao post -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
@@ -951,7 +985,7 @@ app.get('/rejeitarOperacao',
 
        if(hasAuthorization(req)){
               regLog("- Params ("+JSON.stringify(req.params)+")");
-              regLog("- confirmarOperacao -------------------------");
+              regLog("- rejeitarOperacao -------------------------");
               const res_data = req.body;
               let retorno=" ";
               let dt = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")
