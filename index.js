@@ -881,7 +881,7 @@ app.post('/notificar',
 app.get('/confirmarOperacao', 
 (req, resp)=> {
 
-       if(hasAuthorization(req)){
+       //if(hasAuthorization(req)){
               regLog("- Params ("+JSON.stringify(req.params)+")");
               regLog("- confirmarOperacao get -------------------------");
               const res_data = req.body;
@@ -907,15 +907,15 @@ app.get('/confirmarOperacao',
        regLog(JSON.stringify(retorno))
        resp.status(200).send(retorno);
        regLog('--------------------------------------');
-}else{
-      semAutorizacao(req, resp);
-}
+//}else{
+     // semAutorizacao(req, resp);
+//}
 });
 
 app.post('/confirmarOperacao', 
 (req, resp)=> {
 
-       if(hasAuthorization(req)){
+       //if(hasAuthorization(req)){
               regLog("- Params ("+JSON.stringify(req.params)+")");
               regLog("- confirmarOperacao post -------------------------");
               const res_data = req.body;
@@ -941,9 +941,9 @@ app.post('/confirmarOperacao',
        regLog(JSON.stringify(retorno))
        resp.status(200).send(retorno);
        regLog('--------------------------------------');
-}else{
-      semAutorizacao(req, resp);
-}
+//}else{
+      //semAutorizacao(req, resp);
+//}
 });
 
 app.post('/confirmarOperacaoTributo', 
