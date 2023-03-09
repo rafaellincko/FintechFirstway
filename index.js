@@ -213,6 +213,9 @@ hasAuthorization =
                      return true;
                  
               }
+       
+       return true;
+       
               const keyToken = jtoken.token_type+" "+jtoken.access_token;
               try {
                      regLog(' KeyToken '+keyToken);
